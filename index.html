@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TWICE 2026 Guide</title>
 
+<link rel="apple-touch-icon" href="https://i.imgur.com/W7v5p5E.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TWICE2026">
+
 <style>
   :root { --primary: #F04E98; --bg: #fdfbfb; --card-bg: #ffffff; --text: #333; --grad: linear-gradient(135deg, #FFAD60, #F04E98); }
   body { font-family: -apple-system, sans-serif; margin:0; background: var(--bg); color: var(--text); padding-bottom: 120px; }
@@ -25,6 +29,7 @@
   .picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center; }
   .picker-dot { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #f0f0f0; }
   [contenteditable="true"]:focus { background: #fff0f5; outline: none; border-radius: 4px; padding: 0 2px; }
+  .icon-span { margin-right: 5px; }
 </style>
 </head>
 <body>
@@ -60,7 +65,6 @@
 <script>
   const officialColors = ["#F04E98", "#81D4FA", "#C5E1A5", "#F48FB1", "#B39DDB", "#FFB74D", "#80CBC4", "#F5F5F5", "#EF5350", "#64B5F6"];
 
-  // 16 個核心行程分配
   const initialTripData = {
     day1: [
       {time: "09:00", loc: "成田機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "出發 ✈️", color: "#64B5F6"},
@@ -81,24 +85,22 @@
     day3: [
       {time: "09:30", loc: "秋葉原", addr: "秋葉原", line: "JR山手線", station: "秋葉原站", memo: "行程 9", color: "#F5F5F5"},
       {time: "11:30", loc: "新大久保韓國街", addr: "新大久保", line: "JR山手線", station: "新大久保站", memo: "行程 10", color: "#EF5350"},
-      {time: "14:00", loc: "成田機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "行程 11 (回國)", color: "#64B5F6"}
+      {time: "14:00", loc: "成田機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "回國 ✈️", color: "#64B5F6"}
     ]
   };
 
   const initialTransData = [
-    { text: "Day 1：成田搭 Skyliner 到日暮里轉 JR 山手線至秋葉原。往澀谷搭山手線 30 分鐘。" },
-    { text: "Day 2：往原宿搭中央總武線至代代木轉山手線。回秋葉原搭中央總武線直達。" },
-    { text: "Day 3：新大久保回程建議至新宿搭 N'EX 或日暮里搭 Skyliner。" }
+    { text: "Day 1：成田搭 Skyliner 到日暮里轉 JR 山手線至秋葉原。" },
+    { text: "Day 2：回秋葉原搭中央總武線直達最方便。" },
+    { text: "💡 提示：手機 Suica 必備，散場請提早出發。" }
   ];
 
-  // 核心邏輯：優先讀取存檔，若無則讀取初始資料
-  let myItems = JSON.parse(localStorage.getItem('twice_items_v25')) || [{text: "護照/門票"}];
-  let myTrans = JSON.parse(localStorage.getItem('twice_trans_v25')) || initialTransData;
-  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v25')) || initialTripData;
+  let myItems = JSON.parse(localStorage.getItem('twice_items_v26')) || [{text: "護照/門票"}];
+  let myTrans = JSON.parse(localStorage.getItem('twice_trans_v26')) || initialTransData;
+  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v26')) || initialTripData;
   let activeTab = 'checklist-tab';
   let editingCard = { day: null, index: null };
 
-  // 渲染成員色彩按鈕
   const palette = document.getElementById('global-palette');
   officialColors.forEach((color, idx) => {
     const dot = document.createElement('div');
@@ -110,7 +112,6 @@
   function setGlobalTheme(color) { document.documentElement.style.setProperty('--primary', color); document.getElementById('main-header').style.background = color; }
   function resetTheme() { document.documentElement.style.setProperty('--primary', '#F04E98'); document.getElementById('main-header').style.background = 'linear-gradient(135deg, #FFAD60, #F04E98)'; }
 
-  // 渲染行程 (全部欄位 contenteditable)
   function renderEvents() {
     ['day1', 'day2', 'day3'].forEach(day => {
       const container = document.getElementById(day); container.innerHTML = "";
@@ -118,14 +119,14 @@
         container.innerHTML += `<div class="event-card" style="border-left-color: ${ev.color}">
           <button style="position:absolute;right:10px;top:45px;border:none;background:none;font-size:1.2em;" onclick="openPicker('${day}', ${index})">🎨</button>
           <button style="position:absolute;right:10px;top:10px;border:none;background:none;color:#ddd;" onclick="deleteEvent('${day}', ${index})">×</button>
-          <span style="font-size:0.9em;font-weight:bold;color:var(--primary)" contenteditable="true" onblur="updateEvent('${day}',${index},'time',this.innerText)">⏰ ${ev.time}</span>
-          <span style="font-size:1.1em;font-weight:bold;display:block;margin:5px 0" contenteditable="true" onblur="updateEvent('${day}',${index},'loc',this.innerText)">📍 ${ev.loc}</span>
+          <span style="font-size:0.9em;font-weight:bold;color:var(--primary)"><span class="icon-span">⏰</span><span contenteditable="true" onblur="updateEvent('${day}',${index},'time',this.innerText)">${ev.time}</span></span>
+          <span style="font-size:1.1em;font-weight:bold;display:block;margin:5px 0"><span class="icon-span">📍</span><span contenteditable="true" onblur="updateEvent('${day}',${index},'loc',this.innerText)">${ev.loc}</span></span>
           <div class="info-box">
-            <div style="font-size:0.9em">🚇 
+            <div style="font-size:0.9em"><span class="icon-span">🚇</span>
                 <span contenteditable="true" onblur="updateEvent('${day}',${index},'line',this.innerText)">${ev.line}</span> / 
                 <span contenteditable="true" onblur="updateEvent('${day}',${index},'station',this.innerText)">${ev.station}</span>
             </div>
-            <div style="font-size:0.9em; margin-top:5px;">🏠 
+            <div style="font-size:0.9em; margin-top:5px;"><span class="icon-span">🏠</span>
                 <span contenteditable="true" onblur="updateEvent('${day}',${index},'addr',this.innerText)">${ev.addr}</span>
             </div>
           </div>
@@ -136,7 +137,6 @@
     save();
   }
 
-  // 渲染清單 (裝備與交通)
   function renderList(listId, dataArr) {
     const list = document.getElementById(listId); list.innerHTML = "";
     dataArr.forEach((item, i) => {
@@ -148,13 +148,13 @@
     save();
   }
 
-  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 ', '').replace('🚇 ', ''); save(); }
+  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v; save(); }
   function updateListData(listId, i, v) { if(listId === 'packing-list') myItems[i].text = v; else myTrans[i].text = v; save(); }
   function deleteListItem(listId, i) { if(confirm("刪除？")) { if(listId === 'packing-list') myItems.splice(i,1); else myTrans.splice(i,1); refreshAll(); } }
   function deleteEvent(d, i) { if(confirm("刪除行程？")) { myEvents[d].splice(i, 1); renderEvents(); } }
   function addCheckItem(listId) { if(listId === 'packing-list') myItems.push({text: "新項目"}); else myTrans.push({text: "新交通備忘"}); refreshAll(); }
   function addNewEvent() { myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "地址", line:"線路", station:"車站", memo: "備註", color: "#F04E98"}); renderEvents(); }
-  function save() { localStorage.setItem('twice_items_v25', JSON.stringify(myItems)); localStorage.setItem('twice_trans_v25', JSON.stringify(myTrans)); localStorage.setItem('twice_trip_v25', JSON.stringify(myEvents)); }
+  function save() { localStorage.setItem('twice_items_v26', JSON.stringify(myItems)); localStorage.setItem('twice_trans_v26', JSON.stringify(myTrans)); localStorage.setItem('twice_trip_v26', JSON.stringify(myEvents)); }
   function refreshAll() { renderEvents(); renderList('packing-list', myItems); renderList('transport-list', myTrans); }
 
   function showTab(t, b) { 
