@@ -3,51 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TWICE 2026 Tokyo Tour Guide</title>
+<title>TWICE 2026 Tokyo Guide V5</title>
 <style>
-  :root { --primary: #d6336c; --secondary: #ff85a1; --bg: #f8f9fa; --success: #28a745; --info: #17a2b8; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin:0; background: var(--bg); padding-bottom: 30px; }
+  :root { --primary: #d6336c; --bg: #f8f9fa; --success: #28a745; --info: #007bff; --warning: #fd7e14; }
+  body { font-family: -apple-system, system-ui, sans-serif; margin:0; background: var(--bg); padding-bottom: 80px; }
   
-  /* App Header */
   header { background: var(--primary); color:white; text-align:center; padding:15px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-  #countdown { background:#333; color:#fff; font-size:0.85em; padding:8px; text-align:center; font-family: monospace; }
+  
+  /* 倒數計時格式優化 */
+  #countdown { background:#333; color:#ff85a1; font-size:1.1em; padding:10px; text-align:center; font-family: 'Courier New', monospace; font-weight: bold; }
 
-  /* Tab Navigation */
-  .tabs { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 85px; z-index: 999; }
-  .tab-btn { padding: 12px; border: none; background: none; font-weight: bold; color: #666; cursor: pointer; flex: 1; transition: 0.3s; }
+  .tabs { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 87px; z-index: 999; }
+  .tab-btn { padding: 12px; border: none; background: none; font-weight: bold; color: #666; flex: 1; }
   .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #fff0f3; }
 
-  /* Card Layout */
-  .day-content { display: none; padding: 15px; animation: fadeIn 0.3s; }
+  .day-content { display: none; padding: 15px; }
   .day-content.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* 交通標籤 */
+  .nav-box { background: #fff; border-radius: 8px; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+  .station-tag { background: #333; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; margin-right: 5px; }
+  .exit-tag { background: var(--warning); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
 
   .event-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; border-left: 5px solid #ccc; }
   .event-card.plan-A { border-left-color: var(--success); }
-  .event-card.plan-B { border-left-color: #ffc107; display: none; }
-  .event-card.is-concert { background: #fff0f3; border-left-color: var(--primary); }
+  .event-card.is-concert { background: #fff0f3; border-left-color: var(--primary); border-width: 8px; }
   
   .time { font-size: 0.85em; color: #888; margin-bottom: 5px; font-weight: bold; }
-  .location { font-size: 1.05em; font-weight: bold; margin-bottom: 8px; display: block; color: #333; padding-right: 30px; }
-  .memo { font-size: 0.85em; color: #666; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px dashed #ddd; }
+  .location { font-size: 1.1em; font-weight: bold; margin-bottom: 8px; display: block; color: #333; }
+  .memo { font-size: 0.85em; color: #444; background: #f1f3f5; padding: 10px; border-radius: 8px; line-height: 1.5; }
   
-  /* Buttons & UI */
-  .map-link { background: var(--info); color: white !important; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; text-decoration: none; float: right; margin-top: -5px; }
-  .toggle-container { text-align: center; padding: 10px; background: #eee; margin: 10px 15px; border-radius: 10px; }
-  .btn-b { background: #ffc107; border: none; padding: 8px 20px; border-radius: 20px; font-size: 0.85em; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-
-  .done-check { position: absolute; right: 15px; top: 15px; width: 22px; height: 22px; cursor: pointer; }
+  .done-check { position: absolute; right: 15px; top: 15px; width: 24px; height: 24px; }
   .completed { opacity: 0.4; filter: grayscale(1); }
-  .completed .location { text-decoration: line-through; }
+
+  /* 底部快捷工具 */
+  .tools { display: flex; padding: 10px; gap: 10px; background: #eee; }
+  .tool-btn { flex:1; background: #fff; padding: 8px; text-align: center; border-radius: 8px; font-size: 0.8em; text-decoration: none; color: #333; border: 1px solid #ccc; }
 </style>
 </head>
 <body>
 
-<header>🍭 TWICE 2026 TOKYO GO!</header>
-<div id="countdown">載入中...</div>
+<header>TWICE 2026 TOKYO PLAN</header>
+<div id="countdown">00D 00:00:00</div>
 
-<div class="toggle-container">
-  <button class="btn-b" onclick="togglePlanB()">🔄 切換顯示 B 計畫 (備選)</button>
+<div class="tools">
+  <a href="#" class="tool-btn">🎫 電子門票</a>
+  <a href="https://vjw-lp.digital.go.jp/" class="tool-btn">🇯🇵 Visit Japan Web</a>
+  <a href="#" class="tool-btn">📋 購物清單</a>
 </div>
 
 <div class="tabs">
@@ -60,16 +62,22 @@
   <div class="event-card plan-A">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
     <div class="time">10:45–12:30</div>
-    <a href="https://www.google.com/maps/search/K-BOOKS+Ikebukuro" class="map-link">地圖</a>
-    <span class="location">📍 池袋 K-BOOKS 巡禮</span>
-    <div class="memo">包含 K-POP 館、動畫館。TWICE 周邊挖掘重點區。</div>
+    <span class="location">📍 池袋巡禮 (K-BOOKS)</span>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">JR池袋站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">東口 35號出口</span><br>
+      💡 沿著 Sunshine City 方向走即可抵達。
+    </div>
   </div>
   <div class="event-card plan-A">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
     <div class="time">14:00–16:00</div>
-    <a href="https://www.google.com/maps/search/Tower+Records+Akihabara" class="map-link">地圖</a>
-    <span class="location">📍 秋葉原 Tower Records</span>
-    <div class="memo">相較於澀谷店，這裡人潮較少，適合慢慢挑選專輯。</div>
+    <span class="location">📍 秋葉原最後採買</span>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">JR秋葉原站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">電氣街口 (西口)</span><br>
+      💡 適合購買週邊與官方專輯。
+    </div>
   </div>
 </div>
 
@@ -77,51 +85,54 @@
   <div class="event-card plan-A">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
     <div class="time">11:00–12:30</div>
-    <a href="https://www.google.com/maps/search/Tower+Records+Shibuya" class="map-link">地圖</a>
-    <span class="location">📍 澀谷 Tower Records (1F/5F)</span>
-    <div class="memo">🔥 必朝聖！通常有大型 TWICE 裝飾或專輯牆。</div>
-  </div>
-  <div class="event-card plan-A">
-    <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">13:00–14:30</div>
-    <a href="https://www.google.com/maps/search/Shin-Okubo+Station" class="map-link">地圖</a>
-    <span class="location">📍 新大久保 韓國街</span>
-    <div class="memo">推薦：Hallyu Hyakkaten。吃點韓式點心墊肚子。</div>
+    <span class="location">📍 澀谷 Tower Records</span>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">澀谷站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">B1 出口</span><br>
+      💡 1樓與5樓通常有 TWICE 特設專區。
+    </div>
   </div>
   <div class="event-card plan-A is-concert">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">14:30–17:00</div>
-    <span class="location">🏟 抵達 新國立競技場</span>
-    <div class="memo">⚠ 重點：領取預購周邊、與團員旗幟拍照。</div>
+    <div class="time">14:30 (抵達)</div>
+    <span class="location">🏟 國立競技場 (演唱會)</span>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">JR千駄谷站</span> 或 <span class="station-tag">地鐵國立競技場站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">A2出口</span> (地鐵直達)<br>
+      📢 <b>注意：</b>17:00開演，請預留領取應援物時間。
+    </div>
   </div>
 </div>
 
 <div id="day3" class="day-content">
   <div class="event-card plan-A">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">10:00–11:30</div>
-    <a href="https://www.google.com/maps/search/Harajuku+Takeshita+Street" class="map-link">地圖</a>
-    <span class="location">📍 原宿 竹下通 / LINE FRIENDS</span>
-    <div class="memo">檢查有無最新應援或與品牌聯名的快閃店。</div>
+    <div class="time">10:00–12:00</div>
+    <span class="location">📍 原宿/表參道巡禮</span>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">JR原宿站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">竹下口</span><br>
+      💡 逛竹下通應援店、LINE FRIENDS。
+    </div>
   </div>
   <div class="event-card plan-A">
     <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">12:00–13:30</div>
-    <a href="https://www.google.com/maps/search/Shibuya+109" class="map-link">地圖</a>
+    <div class="time">13:00–14:30</div>
     <span class="location">📍 澀谷 109 / MAGNET</span>
-    <div class="memo">午餐：MAGNET 頂樓看澀谷交叉口。進行最後補貨。</div>
-  </div>
-  <div class="event-card plan-B">
-    <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">10:00–13:00</div>
-    <span class="location">📍 B計畫：新宿百貨巡禮</span>
-    <div class="memo">若體力不足，改在新宿站周邊買伴手禮 (Lumine, Odakyu)。</div>
+    <div class="memo">
+      🚉 <b>下車站：</b><span class="station-tag">澀谷站</span><br>
+      🚪 <b>出口：</b><span class="exit-tag">A2出口</span><br>
+      💡 最後補貨與午餐，隨後回飯店取行李。
+    </div>
   </div>
   <div class="event-card plan-A">
-    <input type="checkbox" class="done-check" onclick="markDone(this)">
-    <div class="time">14:00–15:00</div>
-    <span class="location">🏨 飯店取行李 & 往機場</span>
-    <div class="memo">建議搭乘 15:00 左右的 NEX 或 Skyliner 前往機場。</div>
+    <div class="time">15:00</div>
+    <span class="location">✈️ 往成田機場 (N'EX)</span>
+    <div class="memo">
+      🚉 <b>乘車站：</b><span class="station-tag">新宿/澀谷站</span><br>
+      🚪 <b>月台：</b><span class="exit-tag">JR特急月台</span><br>
+      💡 確認班次，N'EX 需全車對號入座。
+    </div>
   </div>
 </div>
 
@@ -131,14 +142,6 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(dayId).classList.add('active');
     btn.classList.add('active');
-    window.scrollTo(0,0);
-  }
-
-  function togglePlanB() {
-    const cards = document.querySelectorAll('.plan-B');
-    cards.forEach(card => {
-      card.style.display = (card.style.display === 'block') ? 'none' : 'block';
-    });
   }
 
   function markDone(cb) {
@@ -149,16 +152,26 @@
     const target = new Date('2026-04-26T17:00:00+09:00');
     const now = new Date();
     const diff = target - now;
+    
     if (diff <= 0) {
       document.getElementById('countdown').innerText = 'CONCERT STARTED! 🍭';
       return;
     }
+    
     const d = Math.floor(diff / (1000 * 60 * 60 * 24));
     const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const m = Math.floor((diff / 1000 / 60) % 60);
     const s = Math.floor((diff / 1000) % 60);
-    document.getElementById('countdown').innerText = `距離開演：${d}天 ${h}時 ${m}分 ${s}秒`;
+    
+    // 格式化為 DD天 HH:mm:ss
+    const displayD = d.toString().padStart(2, '0');
+    const displayH = h.toString().padStart(2, '0');
+    const displayM = m.toString().padStart(2, '0');
+    const displayS = s.toString().padStart(2, '0');
+    
+    document.getElementById('countdown').innerText = `${displayD}D ${displayH}:${displayM}:${displayS}`;
   }
+  
   setInterval(updateCountdown, 1000);
   updateCountdown();
 </script>
