@@ -1,126 +1,104 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TWICE 東京行程</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#FF3EB5">
-  
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="TWICE Trip">
-  <link rel="apple-touch-icon" href="icon-192.png">
-
-  <style>
-    /* TWICE 應援色背景漸層：杏色 #FDBE8E 到 螢光洋紅 #FF3EB5 */
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(135deg, #FDBE8E 0%, #FF3EB5 100%);
-      color: white;
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .container {
-      padding: 24px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      margin-top: 40px;
-      font-size: 32px;
-      font-weight: 800;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 24px;
-      padding: 20px;
-      margin-top: 20px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    }
-
-    .label {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.9;
-      margin-bottom: 4px;
-    }
-
-    .big {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      display: block;
-      margin-top: 20px;
-      padding: 16px;
-      background: #ffffff;
-      color: #ff3eb5;
-      text-align: center;
-      border-radius: 16px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 TWICE 東京互動行程地圖</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+  body { margin:0; padding:0; font-family: Arial, sans-serif; }
+  #map { height: 100vh; width: 100%; }
+  #countdown { position: absolute; top:0; left:0; right:0; z-index:1000; background:#ff6666; color:white; text-align:center; padding:5px; font-size:1em; }
+  .popup-content { font-size:0.9em; }
+  .A { color:green; }
+  .B { color:orange; }
+  .concert { color:red; font-weight:bold; }
+</style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>TWICE 東京行程</h1>
 
-    <div class="card">
-      <div class="label">Concert Date</div>
-      <div class="big">2026 / 04 / 26</div>
-      <div class="label">Venue</div>
-      <div class="big">新國立競技場</div>
-    </div>
+<div id="countdown">距離演唱會開場還有: --:--:--</div>
+<div id="map"></div>
 
-    <div class="card">
-      <div class="label">Fan Tools</div>
-      <div class="big">TWICE 地圖</div>
-      <p style="font-size: 14px; line-height: 1.5;">點擊下方按鈕開啟導航，切換 A / B 計畫使用。</p>
-      <a class="btn" href="https://www.google.com/maps" target="_blank">
-        開啟 Google Maps
-      </a>
-    </div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+// 初始化地圖，中心在東京
+const map = L.map('map').setView([35.6895, 139.6917], 12);
 
-    <div class="footer">
-      Designed for ONCE
-    </div>
-  </div>
+// 加入 OpenStreetMap 圖層
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed'));
-      });
-    }
-  </script>
+// 行程資料
+const points = [
+  // 4/25 池袋
+  {name:'K-BOOKS 池袋 K-POP', lat:35.7295, lng:139.7101, plan:'A', time:'10:45–11:05', note:'⏱10-15 分 | ⚠ 中等人潮', url:'https://goo.gl/maps/YuVChnR1C1FzRzR77'},
+  {name:'Tower Records Ikebukuro', lat:35.7289, lng:139.7108, plan:'A', time:'11:15–11:35', note:'⏱10-20 分 | ⚠ 人少', url:'https://goo.gl/maps/4vCfdPjsU9YV9jz69'},
+  {name:'K-BOOKS Ikebukuro 動畫館', lat:35.7280, lng:139.7115, plan:'A', time:'11:50–12:10', note:'⏱10-15 分 | ⚠ 中等人潮', url:'https://goo.gl/maps/7dRrNm6cHwEj3eZk8'},
+  {name:'K-BOOKS Cast Pavilion', lat:35.7272, lng:139.7120, plan:'A', time:'12:10–12:30', note:'⏱10-15 分 | ⚠ 中等人潮', url:'https://goo.gl/maps/1XwQ3VP6X9u8M8yE9'},
+  // 4/26 渋谷
+  {name:'Tower Vinyl Shibuya', lat:35.6590, lng:139.7003, plan:'A', time:'08:35–08:55', note:'⏱10-20 分 | ⚠ 中等', url:'https://goo.gl/maps/N7aH82rD2e32'},
+  {name:'Tower Records Shibuya', lat:35.6614, lng:139.7041, plan:'A', time:'08:55–09:15', note:'⏱10-20 分 | ⚠ 人少', url:'https://goo.gl/maps/3Y1iJ7pWf8y'},
+  {name:'Mandarake Shibuya', lat:35.6618, lng:139.7010, plan:'A', time:'09:15–09:25', note:'⏱10 分 | ⚠ 爆滿跳過 → B', url:'https://goo.gl/maps/Q2X2B9J3N9H2'},
+  // 新宿
+  {name:'HMV&BOOKS SPOT Shinjuku', lat:35.6938, lng:139.7034, plan:'A', time:'11:05–11:25', note:'⏱10-20 分 | TWICE 專區', url:'https://goo.gl/maps/Fk4eU4jFbXw'},
+  {name:'Tower Records Shinjuku', lat:35.6932, lng:139.7039, plan:'A', time:'11:25–11:45', note:'⏱10-20 分 | TWICE 專區', url:'https://goo.gl/maps/5zRzU7P8C7v'},
+  // 新大久保
+  {name:'Seoul Record', lat:35.7001, lng:139.7020, plan:'A', time:'12:40–13:00', note:'⏱15 分 | TWICE 專區', url:'https://goo.gl/maps/a6vH2XJq5f92'},
+  {name:'Shin-Okubo Korea Town', lat:35.7005, lng:139.7030, plan:'A', time:'13:00–13:20', note:'⏱15 分 | TWICE 周邊', url:'https://goo.gl/maps/mG2Zt6Qv1pJ2'},
+  {name:'Hallyu Hyakkaten', lat:35.7010, lng:139.7040, plan:'A', time:'13:20–13:35', note:'⏱15 分 | TWICE 專區', url:'https://goo.gl/maps/nK3F6JzR2qv'},
+  // 演唱會
+  {name:'新國立競技場 演唱會', lat:35.6774, lng:139.7150, plan:'concert', time:'17:00', note:'提前 14:30 抵達 | ⚠ 不可帶大型行李', url:''},
+];
+
+// 根據計畫設定圖示顏色
+function getColor(plan){
+  if(plan==='A') return 'green';
+  if(plan==='B') return 'orange';
+  if(plan==='concert') return 'red';
+  return 'blue';
+}
+
+// 加標記
+points.forEach(p=>{
+  const marker = L.circleMarker([p.lat, p.lng], {
+    radius:8,
+    color: getColor(p.plan),
+    fillColor: getColor(p.plan),
+    fillOpacity:0.8
+  }).addTo(map);
+  const content = `<div class="popup-content">
+    <strong>${p.name}</strong><br/>
+    時間: ${p.time}<br/>
+    ${p.note}<br/>
+    ${p.url?`<a href="${p.url}" target="_blank">導航到 Google Maps</a>`:''}
+  </div>`;
+  marker.bindPopup(content);
+});
+
+// 連線順路 (A計畫)
+const latlngs = points.filter(p=>p.plan==='A').map(p=>[p.lat,p.lng]);
+L.polyline(latlngs, {color:'green'}).addTo(map);
+
+// 倒數計時器
+function updateCountdown() {
+  const now = new Date();
+  const concertTime = new Date('2026-04-26T17:00:00+09:00');
+  let diff = concertTime - now;
+  if(diff <= 0){
+    document.getElementById('countdown').innerText='演唱會已開始！';
+    clearInterval(timer);
+    return;
+  }
+  const h = Math.floor(diff/1000/3600);
+  const m = Math.floor((diff/1000 % 3600)/60);
+  const s = Math.floor(diff/1000 % 60);
+  document.getElementById('countdown').innerText=`距離演唱會開場還有: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+const timer = setInterval(updateCountdown,1000);
+updateCountdown();
+</script>
+
 </body>
 </html>
-
