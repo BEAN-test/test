@@ -3,75 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TWICE 2026 Tokyo Guide</title>
+<title>TWICE 2026 Guide</title>
 
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="TWICE 2026">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
-  :root { 
-    --primary: #F04E98; /* Neon Magenta */
-    --bg: #fdfbfb; 
-    --card-bg: #ffffff; 
-    --text: #333; 
-  }
-
-  body { font-family: -apple-system, sans-serif; margin:0; background: var(--bg); color: var(--text); padding-bottom: 120px; }
+  :root { --primary: #F04E98; --bg: #fdfbfb; --card-bg: #ffffff; --text: #333; }
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin:0; background: var(--bg); color: var(--text); padding-bottom: 120px; -webkit-tap-highlight-color: transparent; }
   header { background: linear-gradient(135deg, #FFAD60, #F04E98); color:white; text-align:center; padding:18px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
   
-  /* 官方成員色盤 */
   .member-palette { display: flex; overflow-x: auto; padding: 12px; gap: 10px; background: #fff; border-bottom: 1px solid #eee; }
-  .member-dot-wrap { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
-  .member-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #eee; margin-bottom: 4px; }
-  .member-label { font-size: 10px; color: #666; white-space: nowrap; }
+  .member-dot-wrap { display: flex; flex-direction: column; align-items: center; min-width: 45px; cursor: pointer; }
+  .member-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #f0f0f0; margin-bottom: 4px; }
+  .member-label { font-size: 10px; color: #666; }
 
-  #countdown { background:#222; color:#FFAD60; font-size:1em; padding:8px; text-align:center; font-family: 'Courier New', monospace; letter-spacing: 1px; }
-  
+  #countdown { background:#222; color:#FFAD60; font-size:1em; padding:8px; text-align:center; font-family: monospace; letter-spacing: 1px; }
   .tabs { display: flex; background: white; position: sticky; top: 71px; z-index: 999; border-bottom: 1px solid #ddd; }
-  .tab-btn { padding: 14px; border: none; background: none; font-weight: bold; color: #bbb; flex: 1; }
+  .tab-btn { padding: 14px; border: none; background: none; font-weight: bold; color: #bbb; flex: 1; outline: none; }
   .tab-btn.active { color: #F04E98; border-bottom: 3px solid #F04E98; }
 
   .day-content { display: none; padding: 15px; }
   .day-content.active { display: block; }
 
-  /* 行程卡片 */
   .event-card { 
     background: var(--card-bg); border-radius: 15px; padding: 16px; margin-bottom: 15px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; 
-    border-left: 10px solid var(--primary);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; border-left: 10px solid var(--primary);
   }
 
-  .time-tag { font-size: 0.9em; font-weight: bold; color: #F04E98; display: block; }
-  .loc-title { font-size: 1.15em; font-weight: bold; margin: 6px 0; color: #222; display: block; }
   .address-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 10px; border: 1px solid #eee; color: #666; }
-  
-  /* 顏色選擇浮窗 */
+  .route-planner { background: #4285F4; color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(66,133,244,0.3); }
+  .big-add-btn { background: #F04E98; color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; }
+
+  /* 顏色選擇器 */
   .color-picker-overlay {
     display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; 
     padding: 20px 20px 40px; border-radius: 25px 25px 0 0; z-index: 2000; box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
   }
   .picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; text-align: center; font-size: 0.75em; }
   .picker-dot { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 5px; border: 2px solid #f0f0f0; }
-
-  .big-add-btn { background: #F04E98; color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; font-size: 1em; }
-  .route-planner { background: #4285F4; color: white; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; }
-
-  [contenteditable="true"]:focus { background: rgba(0,0,0,0.05); outline: none; border-radius: 4px; }
 </style>
 </head>
 <body>
 
 <header id="main-header">🍭 TWICE 2026 Tokyo Guide</header>
-
 <div class="member-palette" id="global-palette"></div>
-
 <div id="countdown">00D 00:00:00</div>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="showTab('checklist-tab', this)">🧳 CHECK</button>
+  <button class="tab-btn active" onclick="showTab('checklist-tab', this)">🧳 裝備</button>
   <button class="tab-btn" onclick="showTab('day1', this)">4/25</button>
   <button class="tab-btn" onclick="showTab('day2', this)">4/26</button>
   <button class="tab-btn" onclick="showTab('day3', this)">4/27</button>
@@ -87,7 +69,7 @@
 <div id="day3" class="day-content"></div>
 
 <div class="add-area" id="add-btn-container" style="display:none; padding: 0 15px;">
-  <button class="route-planner" onclick="generateDailyRoute()">🗺️ 生成今日 Google Maps 導航</button>
+  <button class="route-planner" onclick="generateDailyRoute()">🗺️ 規劃順暢路線 (Google Maps)</button>
   <button class="big-add-btn" onclick="addNewEvent()">＋ 新增行程地點</button>
 </div>
 
@@ -98,21 +80,14 @@
 </div>
 
 <script>
-  // 重新校正的官方色盤
   const memberColors = [
-    { name: "TWICE", color: "#F04E98" },
-    { name: "娜璉", color: "#81D4FA" },
-    { name: "定延", color: "#C5E1A5" },
-    { name: "Momo", color: "#F48FB1" },
-    { name: "Sana", color: "#B39DDB" },
-    { name: "志效", color: "#FFB74D" },
-    { name: "Mina", color: "#80CBC4" },
-    { name: "多賢", color: "#F5F5F5" },
-    { name: "彩瑛", color: "#EF5350" },
-    { name: "子瑜", color: "#64B5F6" }
+    { name: "TWICE", color: "#F04E98" }, { name: "娜璉", color: "#81D4FA" },
+    { name: "定延", color: "#C5E1A5" }, { name: "Momo", color: "#F48FB1" },
+    { name: "Sana", color: "#B39DDB" }, { name: "志效", color: "#FFB74D" },
+    { name: "Mina", color: "#80CBC4" }, { name: "多賢", color: "#F5F5F5" },
+    { name: "彩瑛", color: "#EF5350" }, { name: "子瑜", color: "#64B5F6" }
   ];
 
-  // 補回的行程資料
   const initialTripData = {
     day1: [
       {time: "10:00", loc: "K-spot (東京一番街)", addr: "東京都千代田區丸之內1-9-1", memo: "官方聯名快閃店", color: "#F04E98"},
@@ -121,34 +96,22 @@
     ],
     day2: [
       {time: "11:00", loc: "Tower Records 澀谷", addr: "東京都澀谷區神南1-22-14", memo: "1F 大看板拍照", color: "#81D4FA"},
-      {time: "17:00", loc: "🏟️ 國立競技場", addr: "東京都新宿區霞丘町10-1", memo: "TWICE CONCERT!", color: "#F04E98", special: "concert"}
+      {time: "17:00", loc: "🏟️ 國立競技場", addr: "東京都新宿區霞丘町10-1", memo: "TWICE CONCERT!", color: "#F04E98"}
     ],
     day3: [
       {time: "10:30", loc: "Seoul Record", addr: "東京都新宿區大久保1-16-13", memo: "新大久保老字號唱片行", color: "#C5E1A5"},
-      {time: "13:00", loc: "Tower Records 新宿", addr: "東京都新宿區新宿3-37-1", memo: "Flags 9F 簽名牆", color: "#64B5F6"}
+      {time: "13:00", loc: "Tower Records 新宿", addr: "東京都新宿區新宿3-37-1", memo: "Flags 簽名牆", color: "#64B5F6"}
     ]
   };
 
-  const initialItems = [
-    {text: "護照 & 門票 QR Code", checked: false},
-    {text: "Candybong & 備用電池", checked: false},
-    {text: "行動電源 & 充電線", checked: false},
-    {text: "應援扇 & 望遠鏡", checked: false}
-  ];
-
-  let myItems = JSON.parse(localStorage.getItem('twice_items_v18_2')) || initialItems;
-  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v18_2')) || initialTripData;
+  let myItems = JSON.parse(localStorage.getItem('twice_items_v18_3')) || [{text: "護照 & 門票", checked: false}];
+  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v18_3')) || initialTripData;
   let activeTab = 'checklist-tab';
   let editingCard = { day: null, index: null };
 
-  // 初始化上方色盤
   const palette = document.getElementById('global-palette');
   memberColors.forEach(m => {
-    palette.innerHTML += `
-      <div class="member-dot-wrap" onclick="setGlobalTheme('${m.color}')">
-        <div class="member-dot" style="background:${m.color}"></div>
-        <div class="member-label">${m.name}</div>
-      </div>`;
+    palette.innerHTML += `<div class="member-dot-wrap" onclick="setGlobalTheme('${m.color}')"><div class="member-dot" style="background:${m.color}"></div><div class="member-label">${m.name}</div></div>`;
   });
 
   function setGlobalTheme(color) {
@@ -156,22 +119,28 @@
     document.getElementById('main-header').style.background = color;
   }
 
-  function openPicker(day, index) {
-    editingCard = { day, index };
-    const grid = document.getElementById('picker-grid');
-    grid.innerHTML = memberColors.map(m => `
-      <div onclick="setCardColor('${m.color}')">
-        <div class="picker-dot" style="background:${m.color}"></div>
-        <div style="font-weight:bold">${m.name}</div>
-      </div>
-    `).join('');
-    document.getElementById('color-picker').style.display = 'block';
-  }
+  function generateDailyRoute() {
+    const addresses = myEvents[activeTab]
+      .map(e => e.addr.trim())
+      .filter(a => a !== "" && a !== "點擊編輯地址");
 
-  function closePicker() { document.getElementById('color-picker').style.display = 'none'; }
-  function setCardColor(color) {
-    myEvents[editingCard.day][editingCard.index].color = color;
-    renderEvents(); closePicker();
+    if (addresses.length < 2) {
+      alert("請至少填寫兩個地點的地址，才能規劃路線唷！");
+      return;
+    }
+
+    // 使用官方推薦的 Universal Link 格式，減少卡頓並自動喚起 App
+    const origin = encodeURIComponent(addresses[0]);
+    const destination = encodeURIComponent(addresses[addresses.length - 1]);
+    let waypoints = "";
+    
+    if (addresses.length > 2) {
+      waypoints = encodeURIComponent(addresses.slice(1, -1).join('|'));
+    }
+
+    const mapUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints ? '&waypoints=' + waypoints : ''}&travelmode=transit`;
+    
+    window.location.href = mapUrl; // 使用 location.href 在 PWA 中通常比 window.open 更順暢
   }
 
   function renderEvents() {
@@ -182,13 +151,13 @@
           <div class="event-card" style="border-left-color: ${ev.color}">
             <button style="position:absolute;right:10px;top:45px;border:none;background:none;font-size:1.5em;" onclick="openPicker('${day}', ${index})">🎨</button>
             <button style="position:absolute;right:10px;top:10px;border:none;background:none;color:#ddd;font-size:1.2em;" onclick="deleteEvent('${day}', ${index})">×</button>
-            <span class="time-tag" contenteditable="true" onblur="updateEvent('${day}',${index},'time',this.innerText)">⏰ ${ev.time}</span>
-            <span class="loc-title" contenteditable="true" onblur="updateEvent('${day}',${index},'loc',this.innerText)">📍 ${ev.loc}</span>
-            <div class="address-box">🏠 地址: <span contenteditable="true" onblur="updateEvent('${day}',${index},'addr',this.innerText)">${ev.addr || ''}</span></div>
+            <span style="font-size:0.9em;font-weight:bold;color:var(--primary)" contenteditable="true" onblur="updateEvent('${day}',${index},'time',this.innerText)">⏰ ${ev.time}</span>
+            <span style="font-size:1.1em;font-weight:bold;display:block;margin:5px 0" contenteditable="true" onblur="updateEvent('${day}',${index},'loc',this.innerText)">📍 ${ev.loc}</span>
+            <div class="address-box">🏠 <span contenteditable="true" onblur="updateEvent('${day}',${index},'addr',this.innerText)">${ev.addr || '點擊編輯地址'}</span></div>
             <div style="font-size:0.85em; color:#777" contenteditable="true" onblur="updateEvent('${day}',${index},'memo',this.innerText)">${ev.memo}</div>
           </div>`;
     });
-    localStorage.setItem('twice_trip_v18_2', JSON.stringify(myEvents));
+    localStorage.setItem('twice_trip_v18_3', JSON.stringify(myEvents));
     });
   }
 
@@ -201,44 +170,27 @@
         <button style="border:none;background:none;color:#ccc;font-size:1.2em;" onclick="deleteItem(${i})">×</button>
       </div>`;
     });
-    localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems));
+    localStorage.setItem('twice_items_v18_3', JSON.stringify(myItems));
   }
 
-  function updateItemText(i, v) { myItems[i].text = v; localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems)); }
-  function toggleItem(i) { myItems[i].checked = !myItems[i].checked; localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems)); }
+  // 其他邏輯維持
+  function openPicker(d, i) { 
+    editingCard = { day: d, index: i }; 
+    const grid = document.getElementById('picker-grid');
+    grid.innerHTML = memberColors.map(m => `<div onclick="setCardColor('${m.color}')"><div class="picker-dot" style="background:${m.color}"></div><b>${m.name}</b></div>`).join('');
+    document.getElementById('color-picker').style.display = 'block'; 
+  }
+  function closePicker() { document.getElementById('color-picker').style.display = 'none'; }
+  function setCardColor(c) { myEvents[editingCard.day][editingCard.index].color = c; renderEvents(); closePicker(); }
+  function updateItemText(i, v) { myItems[i].text = v; localStorage.setItem('twice_items_v18_3', JSON.stringify(myItems)); }
+  function toggleItem(i) { myItems[i].checked = !myItems[i].checked; localStorage.setItem('twice_items_v18_3', JSON.stringify(myItems)); }
   function addCheckItem() { myItems.push({text: "新物品", checked: false}); renderItems(); }
-  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', ''); localStorage.setItem('twice_trip_v18_2', JSON.stringify(myEvents)); }
-  function deleteEvent(d, i) { if(confirm("確定刪除此行程？")) { myEvents[d].splice(i, 1); renderEvents(); } }
-  function addNewEvent() { myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", memo: "點擊編輯...", color: "#F04E98"}); renderEvents(); }
-
-  function generateDailyRoute() {
-    const addrs = myEvents[activeTab].map(e => e.addr).filter(a => a && a.trim() !== "");
-    if(addrs.length < 1) return alert("請先填寫行程中的地址欄位");
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(addrs[0])}&destination=${encodeURIComponent(addrs[addrs.length-1])}&waypoints=${encodeURIComponent(addrs.slice(1,-1).join('|'))}&travelmode=transit`;
-    window.open(url, '_blank');
-  }
-
-  function showTab(tabId, btn) {
-    activeTab = tabId;
-    document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active'); btn.classList.add('active');
-    document.getElementById('add-btn-container').style.display = (tabId === 'checklist-tab') ? 'none' : 'block';
-  }
-
-  function updateCountdown() {
-    const diff = new Date('2026-04-26T17:00:00+09:00') - new Date();
-    if (diff <= 0) { document.getElementById('countdown').innerText = 'CONCERT TIME! 🍭'; return; }
-    const d = Math.floor(diff/86400000).toString().padStart(2,'0');
-    const h = Math.floor((diff/3600000)%24).toString().padStart(2,'0');
-    const m = Math.floor((diff/60000)%60).toString().padStart(2,'0');
-    const s = Math.floor((diff/1000)%60).toString().padStart(2,'0');
-    document.getElementById('countdown').innerText = `${d}D ${h}:${m}:${s}`;
-  }
-
-  setInterval(updateCountdown, 1000);
-  renderItems(); renderEvents();
+  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 ', ''); localStorage.setItem('twice_trip_v18_3', JSON.stringify(myEvents)); }
+  function deleteEvent(d, i) { if(confirm("刪除行程？")) { myEvents[d].splice(i, 1); renderEvents(); } }
+  function addNewEvent() { myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", memo: "點擊編輯", color: "#F04E98"}); renderEvents(); }
+  function showTab(t, b) { activeTab = t; document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById(t).classList.add('active'); b.classList.add('active'); document.getElementById('add-btn-container').style.display = (t === 'checklist-tab') ? 'none' : 'block'; }
+  function updateCountdown() { const diff = new Date('2026-04-26T17:00:00+09:00') - new Date(); if (diff <= 0) { document.getElementById('countdown').innerText = 'CONCERT TIME! 🍭'; return; } const d = Math.floor(diff/86400000).toString().padStart(2,'0'); const h = Math.floor((diff/3600000)%24).toString().padStart(2,'0'); const m = Math.floor((diff/60000)%60).toString().padStart(2,'0'); const s = Math.floor((diff/1000)%60).toString().padStart(2,'0'); document.getElementById('countdown').innerText = `${d}D ${h}:${m}:${s}`; }
+  setInterval(updateCountdown, 1000); renderItems(); renderEvents();
 </script>
-
 </body>
 </html>
