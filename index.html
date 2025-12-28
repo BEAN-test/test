@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWICE 東京行程</title>
+
+  <!-- 內嵌 manifest -->
+  <script type="application/manifest+json">
+  {
+    "name": "TWICE 東京行程",
+    "short_name": "TWICE Trip",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#FDBE8E",
+    "theme_color": "#FF3EB5",
+    "icons": [
+      {
+        "src": "icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  </script>
+
+  <!-- PWA 設定 -->
+  <link rel="manifest" href="data:application/manifest+json,{}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    /* 背景漸層 */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(
+        135deg,
+        #FDBE8E 0%,   /* 杏色 */
+        #FF3EB5 100%  /* 螢光洋紅 */
+      );
+      color: white;
+      min-height: 100vh;
+    }
+
+    .container { padding: 24px; }
+    h1 { margin-top: 20px; font-size: 28px; font-weight: 700; }
+    .card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 20px;
+      backdrop-filter: blur(8px);
+    }
+    .label { font-size: 14px; opacity: 0.85; }
+    .big { font-size: 22px; font-weight: 600; margin-top: 6px; }
+    .btn {
+      display: block;
+      margin-top: 16px;
+      padding: 14px;
+      background: #ffffff;
+      color: #ff3eb5;
+      text-align: center;
+      border-radius: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>TWICE 東京行程</h1>
+
+    <!-- 演唱會資訊 -->
+    <div class="card">
+      <div class="label">演唱會</div>
+      <div class="big">2026 / 4 / 26</div>
+      <div class="label">地點</div>
+      <div class="big">新國立競技場</div>
+    </div>
+
+    <!-- 地圖連結 -->
+    <div class="card">
+      <div class="label">TWICE 地圖點</div>
+      <div class="big">A / B 計畫切換使用</div>
+      <a class="btn" href="https://maps.app.goo.gl/PHhGXo2HQgTatMJb6" target="_blank">
+        開啟 Google Maps
+      </a>
+    </div>
+  </div>
+</body>
+</html>
