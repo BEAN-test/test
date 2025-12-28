@@ -2,73 +2,89 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TWICE 東京行程</title>
 
-  <!-- 內嵌 manifest -->
-  <script type="application/manifest+json">
-  {
-    "name": "TWICE 東京行程",
-    "short_name": "TWICE Trip",
-    "start_url": "index.html",
-    "display": "standalone",
-    "background_color": "#FDBE8E",
-    "theme_color": "#FF3EB5",
-    "icons": [
-      {
-        "src": "icon-192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "icon-512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ]
-  }
-  </script>
-
-  <!-- PWA 設定 -->
-  <link rel="manifest" href="data:application/manifest+json,{}">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FF3EB5">
+  
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TWICE Trip">
+  <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    /* 背景漸層 */
+    /* TWICE 應援色背景漸層：杏色 #FDBE8E 到 螢光洋紅 #FF3EB5 */
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(
-        135deg,
-        #FDBE8E 0%,   /* 杏色 */
-        #FF3EB5 100%  /* 螢光洋紅 */
-      );
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #FDBE8E 0%, #FF3EB5 100%);
       color: white;
       min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .container { padding: 24px; }
-    h1 { margin-top: 20px; font-size: 28px; font-weight: 700; }
-    .card {
-      background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 16px;
-      margin-top: 20px;
-      backdrop-filter: blur(8px);
+    .container {
+      padding: 24px;
+      max-width: 500px;
+      margin: 0 auto;
     }
-    .label { font-size: 14px; opacity: 0.85; }
-    .big { font-size: 22px; font-weight: 600; margin-top: 6px; }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 32px;
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 20px;
+      margin-top: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .label {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+
+    .big {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
     .btn {
       display: block;
-      margin-top: 16px;
-      padding: 14px;
+      margin-top: 20px;
+      padding: 16px;
       background: #ffffff;
       color: #ff3eb5;
       text-align: center;
-      border-radius: 14px;
-      font-weight: 600;
+      border-radius: 16px;
+      font-weight: 700;
       text-decoration: none;
+      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -77,22 +93,33 @@
   <div class="container">
     <h1>TWICE 東京行程</h1>
 
-    <!-- 演唱會資訊 -->
     <div class="card">
-      <div class="label">演唱會</div>
-      <div class="big">2026 / 4 / 26</div>
-      <div class="label">地點</div>
+      <div class="label">Concert Date</div>
+      <div class="big">2026 / 04 / 26</div>
+      <div class="label">Venue</div>
       <div class="big">新國立競技場</div>
     </div>
 
-    <!-- 地圖連結 -->
     <div class="card">
-      <div class="label">TWICE 地圖點</div>
-      <div class="big">A / B 計畫切換使用</div>
-      <a class="btn" href="https://maps.app.goo.gl/PHhGXo2HQgTatMJb6" target="_blank">
+      <div class="label">Fan Tools</div>
+      <div class="big">TWICE 聖地巡禮地圖</div>
+      <p style="font-size: 14px; line-height: 1.5;">點擊下方按鈕開啟導航，切換 A / B 計畫使用。</p>
+      <a class="btn" href="https://www.google.com/maps" target="_blank">
         開啟 Google Maps
       </a>
     </div>
+
+    <div class="footer">
+      Designed for ONCE
+    </div>
   </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed'));
+      });
+    }
+  </script>
 </body>
 </html>
