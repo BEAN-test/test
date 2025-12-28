@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TWICE 2026 Tokyo Guide</title>
+<title>TWICE 2026 Tokyo</title>
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍭</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍭</text></svg>">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TWICE 2026">
 
 <style>
@@ -24,7 +28,7 @@
   .day-content.active { display: block; }
 
   /* 路線圖按鈕 */
-  .route-planner { background: var(--map); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .route-planner { background: var(--map); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 6px rgba(66, 133, 244, 0.3); }
 
   /* 行程卡片 */
   .event-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); position: relative; border-left: 6px solid var(--info); }
@@ -41,12 +45,12 @@
   .add-area { text-align: center; margin: 20px 15px; }
   .big-add-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 15px; border-radius: 30px; font-weight: bold; }
 
-  [contenteditable="true"]:focus { background: white; outline: 2px solid var(--secondary); border-radius: 4px; padding: 2px; }
+  [contenteditable="true"]:focus { background: white; outline: 2px solid var(--secondary); border-radius: 4px; }
 </style>
 </head>
 <body>
 
-<header>🍭 TWICE 2026 行程 & 路線導航</header>
+<header>🍭 TWICE 2026 東京行程導航</header>
 <div id="countdown">00D 00:00:00</div>
 
 <div class="tabs">
@@ -58,8 +62,8 @@
 
 <div id="checklist-tab" class="day-content active">
   <div id="packing-list">
-    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> 護照/門票</div>
-    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> Candybong</div>
+    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> 護照 & 門票 QR Code</div>
+    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> Candybong & 備用電池</div>
   </div>
   <button onclick="addItem()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:bold;">＋ 新增裝備</button>
 </div>
@@ -69,12 +73,11 @@
 <div id="day3" class="day-content"></div>
 
 <div class="add-area" id="add-btn-container" style="display:none;">
-  <button class="route-planner" onclick="generateDailyRoute()">🗺️ 生成今日路線地圖 (串連地址)</button>
+  <button class="route-planner" onclick="generateDailyRoute()">🗺️ 開啟今日路線導航 (Google Maps)</button>
   <button class="big-add-btn" onclick="addNewEvent()">＋ 新增行程地點</button>
 </div>
 
 <script>
-  // 預設含地址的詳細資料
   const initialData = {
     day1: [
       {time: "10:00", loc: "K-spot (東京一番街)", addr: "東京都千代田區丸之內1-9-1", station: "東京站 八重洲地下中央口", memo: "官方聯名快閃"},
@@ -92,7 +95,7 @@
     ]
   };
 
-  let myEvents = JSON.parse(localStorage.getItem('twice_v14')) || initialData;
+  let myEvents = JSON.parse(localStorage.getItem('twice_v15')) || initialData;
   let activeTab = 'day1';
 
   function renderEvents() {
@@ -112,21 +115,21 @@
         `;
       });
     });
-    localStorage.setItem('twice_v14', JSON.stringify(myEvents));
+    localStorage.setItem('twice_v15', JSON.stringify(myEvents));
   }
 
   function updateData(day, index, field, value) {
-    myEvents[day][index][field] = value.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', '');
-    localStorage.setItem('twice_v14', JSON.stringify(myEvents));
+    let clean = value.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', '');
+    myEvents[day][index][field] = clean;
+    localStorage.setItem('twice_v15', JSON.stringify(myEvents));
   }
 
-  // 自動串接當日所有地址生成 Google Maps 路線連結
   function generateDailyRoute() {
     const events = myEvents[activeTab];
     const addrList = events.map(e => e.addr).filter(a => a && a.trim() !== "");
     
     if (addrList.length < 1) {
-      alert("當日行程中沒有可用的地址喔！");
+      alert("當日行程中沒有輸入地址喔！");
       return;
     }
 
@@ -134,26 +137,26 @@
     const destination = addrList[addrList.length - 1];
     const waypoints = addrList.slice(1, -1).join('|');
     
-    let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+    // 使用 Google Maps Directions URL 格式
+    let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=transit`;
     if (waypoints) {
       url += `&waypoints=${encodeURIComponent(waypoints)}`;
     }
-    url += `&travelmode=transit`; // 設定為大眾運輸
 
     window.open(url, '_blank');
   }
 
   function addNewEvent() {
-    myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", station: "出口資訊", memo: "備註..."});
+    myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", station: "出口資訊", memo: "備註內容"});
     renderEvents();
   }
 
   function deleteEvent(day, index) {
-    if(confirm("確定刪除？")) { myEvents[day].splice(index, 1); renderEvents(); }
+    if(confirm("確定要刪除嗎？")) { myEvents[day].splice(index, 1); renderEvents(); }
   }
 
   function addItem() {
-    const val = prompt("新增項目:");
+    const val = prompt("請輸入裝備名稱:");
     if(!val) return;
     const div = document.createElement('div');
     div.style = "padding:10px; background:white; border-radius:8px; margin-bottom:8px;";
@@ -184,7 +187,6 @@
 
   setInterval(updateCountdown, 1000);
   renderEvents();
-  document.getElementById('add-btn-container').style.display = 'none';
 </script>
 
 </body>
