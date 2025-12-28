@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TWICE 2026">
 
 <style>
   :root { 
@@ -22,12 +23,13 @@
   
   /* 官方成員色盤 */
   .member-palette { display: flex; overflow-x: auto; padding: 12px; gap: 10px; background: #fff; border-bottom: 1px solid #eee; }
-  .member-dot { min-width: 35px; height: 35px; border-radius: 50%; border: 2px solid #eee; flex-shrink: 0; position: relative; }
-  .member-label { font-size: 10px; text-align: center; margin-top: 4px; color: #666; }
+  .member-dot-wrap { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
+  .member-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #eee; margin-bottom: 4px; }
+  .member-label { font-size: 10px; color: #666; white-space: nowrap; }
 
   #countdown { background:#222; color:#FFAD60; font-size:1em; padding:8px; text-align:center; font-family: 'Courier New', monospace; letter-spacing: 1px; }
   
-  .tabs { display: flex; background: white; position: sticky; top: 60px; z-index: 999; border-bottom: 1px solid #ddd; }
+  .tabs { display: flex; background: white; position: sticky; top: 71px; z-index: 999; border-bottom: 1px solid #ddd; }
   .tab-btn { padding: 14px; border: none; background: none; font-weight: bold; color: #bbb; flex: 1; }
   .tab-btn.active { color: #F04E98; border-bottom: 3px solid #F04E98; }
 
@@ -38,11 +40,15 @@
   .event-card { 
     background: var(--card-bg); border-radius: 15px; padding: 16px; margin-bottom: 15px; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; 
-    border-left: 8px solid var(--primary);
+    border-left: 10px solid var(--primary);
     transition: all 0.3s ease;
   }
 
-  /* 顏色選擇器浮窗 */
+  .time-tag { font-size: 0.9em; font-weight: bold; color: #F04E98; display: block; }
+  .loc-title { font-size: 1.15em; font-weight: bold; margin: 6px 0; color: #222; display: block; }
+  .address-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 10px; border: 1px solid #eee; color: #666; }
+  
+  /* 顏色選擇浮窗 */
   .color-picker-overlay {
     display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; 
     padding: 20px 20px 40px; border-radius: 25px 25px 0 0; z-index: 2000; box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
@@ -50,20 +56,17 @@
   .picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; text-align: center; font-size: 0.75em; }
   .picker-dot { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 5px; border: 2px solid #f0f0f0; }
 
-  .time-tag { font-size: 0.9em; font-weight: bold; color: #F04E98; }
-  .loc-title { font-size: 1.15em; font-weight: bold; margin: 6px 0; color: #222; }
-  .address-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 10px; border: 1px solid #eee; color: #666; }
-  
   .big-add-btn { background: #F04E98; color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; font-size: 1em; }
   .route-planner { background: #4285F4; color: white; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; }
+
+  [contenteditable="true"]:focus { background: rgba(0,0,0,0.05); outline: none; border-radius: 4px; }
 </style>
 </head>
 <body>
 
 <header id="main-header">🍭 TWICE 2026 Tokyo Guide</header>
 
-<div class="member-palette" id="global-palette">
-  </div>
+<div class="member-palette" id="global-palette"></div>
 
 <div id="countdown">00D 00:00:00</div>
 
@@ -89,15 +92,15 @@
 </div>
 
 <div id="color-picker" class="color-picker-overlay">
-  <h3 style="margin:0 0 20px; text-align:center;">選擇成員代表色</h3>
+  <h3 style="margin:0 0 20px; text-align:center;">選擇代表色</h3>
   <div class="picker-grid" id="picker-grid"></div>
-  <button onclick="closePicker()" style="width:100%; margin-top:25px; padding:15px; border-radius:15px; border:none; background:#f5f5f5; font-weight:bold;">關閉選單</button>
+  <button onclick="closePicker()" style="width:100%; margin-top:25px; padding:15px; border-radius:15px; border:none; background:#f5f5f5; font-weight:bold;">取消</button>
 </div>
 
 <script>
-  // 校正後的官方代表色
+  // 重新校正的官方色盤
   const memberColors = [
-    { name: "TWICE", color: "#F04E98", secondary: "#FFAD60" },
+    { name: "TWICE", color: "#F04E98" },
     { name: "娜璉", color: "#81D4FA" },
     { name: "定延", color: "#C5E1A5" },
     { name: "Momo", color: "#F48FB1" },
@@ -109,21 +112,43 @@
     { name: "子瑜", color: "#64B5F6" }
   ];
 
-  let myItems = JSON.parse(localStorage.getItem('twice_items_v18_1')) || [{text: "護照 & 門票", checked: false}];
-  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v18_1')) || {
-    day1: [{time: "10:00", loc: "東京一番街", addr: "東京都千代田區丸之內1-9-1", memo: "K-spot 快閃店", color: "#F04E98"}],
-    day2: [{time: "17:00", loc: "國立競技場", addr: "東京都新宿區霞丘町10-1", memo: "TWICE Final Concert", color: "#F04E98", special: "concert"}],
-    day3: [{time: "10:00", loc: "新大久保", addr: "東京都新宿區大久保", memo: "補貨官方周邊", color: "#F04E98"}]
+  // 補回的行程資料
+  const initialTripData = {
+    day1: [
+      {time: "10:00", loc: "K-spot (東京一番街)", addr: "東京都千代田區丸之內1-9-1", memo: "官方聯名快閃店", color: "#F04E98"},
+      {time: "13:30", loc: "K-BOOKS K-POP館", addr: "東京都豐島區東池袋1-28-1", memo: "池袋尋寶小卡", color: "#F48FB1"},
+      {time: "16:00", loc: "Tower Records 池袋", addr: "東京都豐島區東池袋1-50-35", memo: "應援看板巡禮", color: "#B39DDB"}
+    ],
+    day2: [
+      {time: "11:00", loc: "Tower Records 澀谷", addr: "東京都澀谷區神南1-22-14", memo: "1F 大看板拍照", color: "#81D4FA"},
+      {time: "17:00", loc: "🏟️ 國立競技場", addr: "東京都新宿區霞丘町10-1", memo: "TWICE CONCERT!", color: "#F04E98", special: "concert"}
+    ],
+    day3: [
+      {time: "10:30", loc: "Seoul Record", addr: "東京都新宿區大久保1-16-13", memo: "新大久保老字號唱片行", color: "#C5E1A5"},
+      {time: "13:00", loc: "Tower Records 新宿", addr: "東京都新宿區新宿3-37-1", memo: "Flags 9F 簽名牆", color: "#64B5F6"}
+    ]
   };
+
+  const initialItems = [
+    {text: "護照 & 門票 QR Code", checked: false},
+    {text: "Candybong & 備用電池", checked: false},
+    {text: "行動電源 & 充電線", checked: false},
+    {text: "應援扇 & 望遠鏡", checked: false}
+  ];
+
+  let myItems = JSON.parse(localStorage.getItem('twice_items_v18_2')) || initialItems;
+  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v18_2')) || initialTripData;
   let activeTab = 'checklist-tab';
   let editingCard = { day: null, index: null };
 
-  // 初始化頂部色盤
+  // 初始化上方色盤
   const palette = document.getElementById('global-palette');
   memberColors.forEach(m => {
-    const div = document.createElement('div');
-    div.innerHTML = `<div class="member-dot" style="background:${m.color}" onclick="setGlobalTheme('${m.color}')"></div><div class="member-label">${m.name}</div>`;
-    palette.appendChild(div);
+    palette.innerHTML += `
+      <div class="member-dot-wrap" onclick="setGlobalTheme('${m.color}')">
+        <div class="member-dot" style="background:${m.color}"></div>
+        <div class="member-label">${m.name}</div>
+      </div>`;
   });
 
   function setGlobalTheme(color) {
@@ -163,7 +188,7 @@
             <div style="font-size:0.85em; color:#777" contenteditable="true" onblur="updateEvent('${day}',${index},'memo',this.innerText)">${ev.memo}</div>
           </div>`;
     });
-    localStorage.setItem('twice_trip_v18_1', JSON.stringify(myEvents));
+    localStorage.setItem('twice_trip_v18_2', JSON.stringify(myEvents));
     });
   }
 
@@ -176,20 +201,21 @@
         <button style="border:none;background:none;color:#ccc;font-size:1.2em;" onclick="deleteItem(${i})">×</button>
       </div>`;
     });
-    localStorage.setItem('twice_items_v18_1', JSON.stringify(myItems));
+    localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems));
   }
 
-  function updateItemText(i, v) { myItems[i].text = v; localStorage.setItem('twice_items_v18_1', JSON.stringify(myItems)); }
-  function toggleItem(i) { myItems[i].checked = !myItems[i].checked; localStorage.setItem('twice_items_v18_1', JSON.stringify(myItems)); }
+  function updateItemText(i, v) { myItems[i].text = v; localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems)); }
+  function toggleItem(i) { myItems[i].checked = !myItems[i].checked; localStorage.setItem('twice_items_v18_2', JSON.stringify(myItems)); }
   function addCheckItem() { myItems.push({text: "新物品", checked: false}); renderItems(); }
-  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', ''); localStorage.setItem('twice_trip_v18_1', JSON.stringify(myEvents)); }
+  function updateEvent(d, i, f, v) { myEvents[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', ''); localStorage.setItem('twice_trip_v18_2', JSON.stringify(myEvents)); }
   function deleteEvent(d, i) { if(confirm("確定刪除此行程？")) { myEvents[d].splice(i, 1); renderEvents(); } }
   function addNewEvent() { myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", memo: "點擊編輯...", color: "#F04E98"}); renderEvents(); }
 
   function generateDailyRoute() {
     const addrs = myEvents[activeTab].map(e => e.addr).filter(a => a && a.trim() !== "");
     if(addrs.length < 1) return alert("請先填寫行程中的地址欄位");
-    window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(addrs[0])}&destination=${encodeURIComponent(addrs[addrs.length-1])}&waypoints=${encodeURIComponent(addrs.slice(1,-1).join('|'))}&travelmode=transit`, '_blank');
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(addrs[0])}&destination=${encodeURIComponent(addrs[addrs.length-1])}&waypoints=${encodeURIComponent(addrs.slice(1,-1).join('|'))}&travelmode=transit`;
+    window.open(url, '_blank');
   }
 
   function showTab(tabId, btn) {
