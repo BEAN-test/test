@@ -2,170 +2,165 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 TWICE 東京行程 A+B 計畫</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TWICE 2026 Tokyo Tour Guide</title>
 <style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
-  header { background:#d6336c; color:white; text-align:center; padding:10px 0; font-size:1.5em; position:sticky; top:0; z-index:1000; }
-  #countdown { background:#ff6666; color:white; font-size:1em; padding:5px; text-align:center; }
-  .day { background:white; margin:10px; border-radius:8px; padding:10px; }
-  .day h2 { margin-top:0; }
-  table { width:100%; border-collapse: collapse; margin-top:5px; }
-  th, td { border:1px solid #ccc; padding:5px; text-align:left; font-size:0.9em; vertical-align: middle; }
-  th { background:#eee; }
-  .A { background:#b3e5b3; } /* 綠色 A計畫 */
-  .B { background:#fff3b3; } /* 黃色 B計畫 */
-  .concert { background:#ff9999; font-weight:bold; } /* 紅色演唱會 */
-  .toggle-btn { display:block; margin:5px auto; padding:5px 10px; border:none; background:#d6336c; color:white; border-radius:5px; font-size:0.9em; }
-  .hidden { display:none; }
-  footer { text-align:center; font-size:0.8em; margin:10px; color:#666; }
-  a { color:#d6336c; text-decoration:none; display:inline-block; }
-  a:hover { text-decoration:underline; }
-  .icon { font-size:1.1em; margin-right:5px; }
+  :root { --primary: #d6336c; --secondary: #ff85a1; --bg: #f8f9fa; --success: #28a745; --info: #17a2b8; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin:0; background: var(--bg); padding-bottom: 30px; }
+  
+  /* App Header */
+  header { background: var(--primary); color:white; text-align:center; padding:15px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  #countdown { background:#333; color:#fff; font-size:0.85em; padding:8px; text-align:center; font-family: monospace; }
+
+  /* Tab Navigation */
+  .tabs { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 85px; z-index: 999; }
+  .tab-btn { padding: 12px; border: none; background: none; font-weight: bold; color: #666; cursor: pointer; flex: 1; transition: 0.3s; }
+  .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #fff0f3; }
+
+  /* Card Layout */
+  .day-content { display: none; padding: 15px; animation: fadeIn 0.3s; }
+  .day-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .event-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; border-left: 5px solid #ccc; }
+  .event-card.plan-A { border-left-color: var(--success); }
+  .event-card.plan-B { border-left-color: #ffc107; display: none; }
+  .event-card.is-concert { background: #fff0f3; border-left-color: var(--primary); }
+  
+  .time { font-size: 0.85em; color: #888; margin-bottom: 5px; font-weight: bold; }
+  .location { font-size: 1.05em; font-weight: bold; margin-bottom: 8px; display: block; color: #333; padding-right: 30px; }
+  .memo { font-size: 0.85em; color: #666; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px dashed #ddd; }
+  
+  /* Buttons & UI */
+  .map-link { background: var(--info); color: white !important; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; text-decoration: none; float: right; margin-top: -5px; }
+  .toggle-container { text-align: center; padding: 10px; background: #eee; margin: 10px 15px; border-radius: 10px; }
+  .btn-b { background: #ffc107; border: none; padding: 8px 20px; border-radius: 20px; font-size: 0.85em; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+  .done-check { position: absolute; right: 15px; top: 15px; width: 22px; height: 22px; cursor: pointer; }
+  .completed { opacity: 0.4; filter: grayscale(1); }
+  .completed .location { text-decoration: line-through; }
 </style>
 </head>
 <body>
 
-<header>2026 TWICE 東京行程 A+B 計畫</header>
-<div id="countdown">距離演唱會開場還有: --:--:--</div>
+<header>🍭 TWICE 2026 TOKYO GO!</header>
+<div id="countdown">載入中...</div>
 
-<div class="day" id="day1">
-  <h2>4/25（五）｜池袋＋秋葉原</h2>
-  <button class="toggle-btn" onclick="toggleB('day1')">顯示/隱藏 B 計畫</button>
-  <table>
-    <tr><th>時間</th><th>地點</th><th>交通</th><th>計畫</th><th>備註</th></tr>
-    <tr class="A"><td>10:45–11:05</td>
-      <td><a href="https://goo.gl/maps/YuVChnR1C1FzRzR77" target="_blank"><span class="icon">📍</span>K-BOOKS 池袋 K-POP</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-15 分 | ⚠ 中等人潮 | 拍門面/周邊</td>
-    </tr>
-    <tr class="A"><td>11:15–11:35</td>
-      <td><a href="https://goo.gl/maps/4vCfdPjsU9YV9jz69" target="_blank"><span class="icon">📍</span>Tower Records Ikebukuro</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-20 分 | ⚠ 人少 | TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>11:50–12:10</td>
-      <td><a href="https://goo.gl/maps/7dRrNm6cHwEj3eZk8" target="_blank"><span class="icon">📍</span>K-BOOKS Ikebukuro 動畫館</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-15 分 | ⚠ 中等人潮 | TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>12:10–12:30</td>
-      <td><a href="https://goo.gl/maps/1XwQ3VP6X9u8M8yE9" target="_blank"><span class="icon">📍</span>K-BOOKS Cast Pavilion</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-15 分 | ⚠ 中等人潮 | TWICE 專區</td>
-    </tr>
-    <tr class="B hidden"><td>12:30–12:50</td>
-      <td><a href="https://goo.gl/maps/7dRrNm6cHwEj3eZk8" target="_blank"><span class="icon">📍</span>K-BOOKS Ikebukuro 動畫館</a></td>
-      <td>步行</td><td>B</td>
-      <td>⏱10-15 分 | ⚠ 若沒時間可移到 4/27</td>
-    </tr>
-  </table>
+<div class="toggle-container">
+  <button class="btn-b" onclick="togglePlanB()">🔄 切換顯示 B 計畫 (備選)</button>
 </div>
 
-<div class="day" id="day2">
-  <h2>4/26（六）｜渋谷 + 新宿 + 新大久保 + 演唱會</h2>
-  <button class="toggle-btn" onclick="toggleB('day2')">顯示/隱藏 B 計畫</button>
-  <table>
-    <tr><th>時間</th><th>地點</th><th>交通</th><th>計畫</th><th>備註</th></tr>
-    <tr class="A"><td>08:35–08:55</td>
-      <td><a href="https://goo.gl/maps/N7aH82rD2e32" target="_blank"><span class="icon">📍</span>Tower Vinyl Shibuya</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-20 分 | ⚠ 中等 | 拍 TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>08:55–09:15</td>
-      <td><a href="https://goo.gl/maps/3Y1iJ7pWf8y" target="_blank"><span class="icon">📍</span>Tower Records Shibuya</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-20 分 | ⚠ 人少就進店</td>
-    </tr>
-    <tr class="A"><td>09:15–09:25</td>
-      <td><a href="https://goo.gl/maps/Q2X2B9J3N9H2" target="_blank"><span class="icon">📍</span>Mandarake Shibuya</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10 分 | ⚠ 爆滿跳過 → B</td>
-    </tr>
-    <tr class="B hidden"><td>09:15–09:25</td>
-      <td><a href="https://goo.gl/maps/Q2X2B9J3N9H2" target="_blank"><span class="icon">📍</span>Mandarake Shibuya</a></td>
-      <td>步行</td><td>B</td>
-      <td>跳過改新宿補</td>
-    </tr>
-    <tr class="A"><td>11:05–11:25</td>
-      <td><a href="https://goo.gl/maps/Fk4eU4jFbXw" target="_blank"><span class="icon">📍</span>HMV&BOOKS SPOT Shinjuku</a></td>
-      <td>JR</td><td>A</td>
-      <td>⏱10-20 分 | TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>11:25–11:45</td>
-      <td><a href="https://goo.gl/maps/5zRzU7P8C7v" target="_blank"><span class="icon">📍</span>Tower Records Shinjuku</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱10-20 分 | TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>12:40–13:00</td>
-      <td><a href="https://goo.gl/maps/a6vH2XJq5f92" target="_blank"><span class="icon">📍</span>Seoul Record</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱15 分 | TWICE 專區</td>
-    </tr>
-    <tr class="A"><td>13:00–13:20</td>
-      <td><a href="https://goo.gl/maps/mG2Zt6Qv1pJ2" target="_blank"><span class="icon">📍</span>Shin-Okubo Korea Town</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱15 分 | TWICE 周邊</td>
-    </tr>
-    <tr class="A"><td>13:20–13:35</td>
-      <td><a href="https://goo.gl/maps/nK3F6JzR2qv" target="_blank"><span class="icon">📍</span>Hallyu Hyakkaten</a></td>
-      <td>步行</td><td>A</td>
-      <td>⏱15 分 | TWICE 專區</td>
-    </tr>
-    <tr class="concert"><td>17:00</td><td>新國立競技場 演唱會</td><td>步行</td><td>演唱會</td><td>提前 14:30 抵達 | ⚠ 不可帶大型行李</td></tr>
-  </table>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showDay('day1', this)">4/25(五)</button>
+  <button class="tab-btn" onclick="showDay('day2', this)">4/26(六)</button>
+  <button class="tab-btn" onclick="showDay('day3', this)">4/27(日)</button>
 </div>
 
-<div class="day" id="day3">
-  <h2>4/27（日）｜補拍 + 回程</h2>
-  <button class="toggle-btn" onclick="toggleB('day3')">顯示/隱藏 B 計畫</button>
-  <table>
-    <tr><th>時間</th><th>地點</th><th>交通</th><th>計畫</th><th>備註</th></tr>
-    <tr class="B hidden"><td>09:30–10:00</td>
-      <td><a href="https://goo.gl/maps/Q2X2B9J3N9H2" target="_blank"><span class="icon">📍</span>Mandarake Shibuya / 新宿店</a></td>
-      <td>JR</td><td>B</td>
-      <td>⏱10 分 | 補前一天爆滿未完成</td>
-    </tr>
-    <tr class="B hidden"><td>10:00–11:00</td>
-      <td><a href="https://goo.gl/maps/a6vH2XJq5f92" target="_blank"><span class="icon">📍</span>新大久保剩餘店</a></td>
-      <td>步行</td><td>B</td>
-      <td>⏱15 分 | 補前一天未完成</td>
-    </tr>
-    <tr class="B hidden"><td>12:00–12:30</td>
-      <td><a href="https://goo.gl/maps/4vCfdPjsU9YV9jz69" target="_blank"><span class="icon">📍</span>秋葉原最後採買</a></td>
-      <td>JR</td><td>B</td>
-      <td>⏱15 分 | 補拍照片或購物</td>
-    </tr>
-    <tr class="A"><td>下午</td><td>回飯店取行李 → 成田機場</td><td>JR/NEX</td><td>A</td><td>結束行程</td></tr>
-  </table>
+<div id="day1" class="day-content active">
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">10:45–12:30</div>
+    <a href="https://www.google.com/maps/search/K-BOOKS+Ikebukuro" class="map-link">地圖</a>
+    <span class="location">📍 池袋 K-BOOKS 巡禮</span>
+    <div class="memo">包含 K-POP 館、動畫館。TWICE 周邊挖掘重點區。</div>
+  </div>
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">14:00–16:00</div>
+    <a href="https://www.google.com/maps/search/Tower+Records+Akihabara" class="map-link">地圖</a>
+    <span class="location">📍 秋葉原 Tower Records</span>
+    <div class="memo">相較於澀谷店，這裡人潮較少，適合慢慢挑選專輯。</div>
+  </div>
 </div>
 
-<footer>2026 TWICE 東京行程 A+B 計畫 | 製作：ChatGPT</footer>
+<div id="day2" class="day-content">
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">11:00–12:30</div>
+    <a href="https://www.google.com/maps/search/Tower+Records+Shibuya" class="map-link">地圖</a>
+    <span class="location">📍 澀谷 Tower Records (1F/5F)</span>
+    <div class="memo">🔥 必朝聖！通常有大型 TWICE 裝飾或專輯牆。</div>
+  </div>
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">13:00–14:30</div>
+    <a href="https://www.google.com/maps/search/Shin-Okubo+Station" class="map-link">地圖</a>
+    <span class="location">📍 新大久保 韓國街</span>
+    <div class="memo">推薦：Hallyu Hyakkaten。吃點韓式點心墊肚子。</div>
+  </div>
+  <div class="event-card plan-A is-concert">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">14:30–17:00</div>
+    <span class="location">🏟 抵達 新國立競技場</span>
+    <div class="memo">⚠ 重點：領取預購周邊、與團員旗幟拍照。</div>
+  </div>
+</div>
+
+<div id="day3" class="day-content">
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">10:00–11:30</div>
+    <a href="https://www.google.com/maps/search/Harajuku+Takeshita+Street" class="map-link">地圖</a>
+    <span class="location">📍 原宿 竹下通 / LINE FRIENDS</span>
+    <div class="memo">檢查有無最新應援或與品牌聯名的快閃店。</div>
+  </div>
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">12:00–13:30</div>
+    <a href="https://www.google.com/maps/search/Shibuya+109" class="map-link">地圖</a>
+    <span class="location">📍 澀谷 109 / MAGNET</span>
+    <div class="memo">午餐：MAGNET 頂樓看澀谷交叉口。進行最後補貨。</div>
+  </div>
+  <div class="event-card plan-B">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">10:00–13:00</div>
+    <span class="location">📍 B計畫：新宿百貨巡禮</span>
+    <div class="memo">若體力不足，改在新宿站周邊買伴手禮 (Lumine, Odakyu)。</div>
+  </div>
+  <div class="event-card plan-A">
+    <input type="checkbox" class="done-check" onclick="markDone(this)">
+    <div class="time">14:00–15:00</div>
+    <span class="location">🏨 飯店取行李 & 往機場</span>
+    <div class="memo">建議搭乘 15:00 左右的 NEX 或 Skyliner 前往機場。</div>
+  </div>
+</div>
 
 <script>
-function toggleB(dayId) {
-  const rows = document.querySelectorAll('#' + dayId + ' tr.B');
-  rows.forEach(r => r.classList.toggle('hidden'));
-}
-
-// 倒數計時器
-function updateCountdown() {
-  const now = new Date();
-  // 設定演唱會開始時間：2026-04-26 17:00 東京時間
-  const concertTime = new Date('2026-04-26T17:00:00+09:00');
-  let diff = concertTime - now;
-  if(diff <= 0) {
-    document.getElementById('countdown').innerText = '演唱會已開始！';
-    clearInterval(timer);
-    return;
+  function showDay(dayId, btn) {
+    document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(dayId).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo(0,0);
   }
-  const h = Math.floor(diff / 1000 / 3600);
-  const m = Math.floor((diff / 1000 % 3600) / 60);
-  const s = Math.floor(diff / 1000 % 60);
-  document.getElementById('countdown').innerText = `距離演唱會開場還有: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-}
-const timer = setInterval(updateCountdown, 1000);
-updateCountdown();
+
+  function togglePlanB() {
+    const cards = document.querySelectorAll('.plan-B');
+    cards.forEach(card => {
+      card.style.display = (card.style.display === 'block') ? 'none' : 'block';
+    });
+  }
+
+  function markDone(cb) {
+    cb.parentElement.classList.toggle('completed');
+  }
+
+  function updateCountdown() {
+    const target = new Date('2026-04-26T17:00:00+09:00');
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerText = 'CONCERT STARTED! 🍭';
+      return;
+    }
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / 1000 / 60) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+    document.getElementById('countdown').innerText = `距離開演：${d}天 ${h}時 ${m}分 ${s}秒`;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 </script>
 
 </body>
