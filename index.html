@@ -3,51 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TWICE 2026 Tokyo</title>
+<title>TWICE 2026 Tokyo Guide</title>
 
-<link rel="apple-touch-icon" href="https://img.icons8.com/color/512/lollipop.png">
-<link rel="icon" type="image/png" href="https://img.icons8.com/color/512/lollipop.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍭</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍭</text></svg>">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="TWICE 2026">
 
 <style>
-  :root { --primary: #d6336c; --secondary: #ff85a1; --bg: #f8f9fa; --info: #17a2b8; --warning: #ffc107; }
-  body { font-family: -apple-system, system-ui, sans-serif; margin:0; background: var(--bg); padding-bottom: 120px; }
+  :root { --primary: #d6336c; --secondary: #ff85a1; --bg: #f8f9fa; --info: #17a2b8; --map: #4285F4; --address-bg: #fff9db; }
+  body { font-family: -apple-system, sans-serif; margin:0; background: var(--bg); padding-bottom: 120px; }
   header { background: var(--primary); color:white; text-align:center; padding:15px; font-weight:bold; position:sticky; top:0; z-index:1000; }
-  #countdown { background:#333; color:var(--secondary); font-size:1.1em; padding:8px; text-align:center; font-family: monospace; font-weight: bold; }
-  .tabs { display: flex; justify-content: space-around; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 50px; z-index: 999; }
+  #countdown { background:#333; color:var(--secondary); font-size:1em; padding:8px; text-align:center; font-family: monospace; }
+  
+  .tabs { display: flex; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 50px; z-index: 999; }
   .tab-btn { padding: 12px; border: none; background: none; font-weight: bold; color: #666; flex: 1; font-size: 0.85em; }
   .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #fff0f3; }
+
   .day-content { display: none; padding: 15px; }
   .day-content.active { display: block; }
 
+  /* 路線圖按鈕 */
+  .route-planner { background: var(--map); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
   /* 行程卡片 */
   .event-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); position: relative; border-left: 6px solid var(--info); }
-  .event-card.concert { border-left-color: var(--primary); background: #fff0f3; border-left-width: 10px; }
+  .event-card.concert { border-left-color: var(--primary); background: #fff0f3; }
   
-  /* 點擊編輯 */
-  [contenteditable="true"] { outline: none; transition: 0.2s; border-radius: 4px; padding: 2px; }
-  [contenteditable="true"]:focus { background: #fff4f7; box-shadow: 0 0 0 2px var(--secondary); }
-
-  .time-tag { font-size: 0.85em; font-weight: bold; color: var(--primary); display: block; margin-bottom: 5px; }
-  .loc-title { font-size: 1.1em; font-weight: bold; color: #222; display: block; margin-bottom: 8px; }
-  .transport-box { background: #f1f3f5; padding: 8px; border-radius: 6px; font-size: 0.85em; margin-bottom: 10px; border-left: 3px solid #ccc; }
-  .memo-content { font-size: 0.82em; color: #555; line-height: 1.6; white-space: pre-wrap; background: #fafafa; padding: 8px; border-radius: 4px; border: 1px solid #eee; }
+  .time-tag { font-size: 0.85em; font-weight: bold; color: var(--primary); display: block; }
+  .loc-title { font-size: 1.1em; font-weight: bold; color: #222; margin: 5px 0; display: block; }
   
-  .del-btn { position: absolute; right: 10px; top: 10px; color: #ccc; border: none; background: none; font-size: 1.2em; cursor: pointer; }
-  .add-area { text-align: center; margin: 20px 0; }
-  .big-add-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; box-shadow: 0 4px 10px rgba(214, 51, 108, 0.3); }
+  .address-box { background: var(--address-bg); padding: 8px; border-radius: 6px; font-size: 0.8em; margin-bottom: 8px; color: #856404; border: 1px dashed #ffeeba; }
+  .transport-box { background: #f1f3f5; padding: 8px; border-radius: 6px; font-size: 0.85em; margin-bottom: 8px; color: #444; }
+  .memo-content { font-size: 0.82em; color: #555; line-height: 1.5; white-space: pre-wrap; background: #fafafa; padding: 8px; border-radius: 4px; }
+  
+  .del-btn { position: absolute; right: 10px; top: 10px; color: #ccc; border: none; background: none; font-size: 1.2em; }
+  .add-area { text-align: center; margin: 20px 15px; }
+  .big-add-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 15px; border-radius: 30px; font-weight: bold; }
 
-  /* 裝備清單 */
-  .check-item { display: flex; align-items: center; background: white; padding: 12px; margin-bottom: 8px; border-radius: 10px; border: 1px solid #eee; }
-  .check-item input { width: 18px; height: 18px; margin-right: 12px; }
+  [contenteditable="true"]:focus { background: white; outline: 2px solid var(--secondary); border-radius: 4px; padding: 2px; }
 </style>
 </head>
 <body>
 
-<header>🍭 TWICE 2026 東京攻堅 App</header>
+<header>🍭 TWICE 2026 行程 & 路線導航</header>
 <div id="countdown">00D 00:00:00</div>
 
 <div class="tabs">
@@ -59,47 +58,41 @@
 
 <div id="checklist-tab" class="day-content active">
   <div id="packing-list">
-    <div class="check-item"><input type="checkbox"><span>護照 & 機票 QR Code</span></div>
-    <div class="check-item"><input type="checkbox"><span>Candybong & 備用電池</span></div>
-    <div class="check-item"><input type="checkbox"><span>行動電源 (10000mAh+)</span></div>
-    <div class="check-item"><input type="checkbox"><span>休足時間 (晚上必備)</span></div>
+    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> 護照/門票</div>
+    <div style="padding:10px; background:white; border-radius:8px; margin-bottom:8px;"><input type="checkbox"> Candybong</div>
   </div>
-  <div style="margin-top:20px; display:flex; gap:10px;">
-    <input type="text" id="new-item-input" placeholder="新增裝備..." style="flex:1; padding:12px; border:1px solid #ddd; border-radius:8px;">
-    <button onclick="addItem()" style="padding:12px 15px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:bold;">新增</button>
-  </div>
+  <button onclick="addItem()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:bold;">＋ 新增裝備</button>
 </div>
 
 <div id="day1" class="day-content"></div>
 <div id="day2" class="day-content"></div>
 <div id="day3" class="day-content"></div>
 
-<div class="add-area" id="add-btn-container">
-  <button class="big-add-btn" onclick="addNewEvent()">＋ 加入新行程地點</button>
+<div class="add-area" id="add-btn-container" style="display:none;">
+  <button class="route-planner" onclick="generateDailyRoute()">🗺️ 生成今日路線地圖 (串連地址)</button>
+  <button class="big-add-btn" onclick="addNewEvent()">＋ 新增行程地點</button>
 </div>
 
 <script>
-  // 預設詳細資料
+  // 預設含地址的詳細資料
   const initialData = {
     day1: [
-      {time: "10:00", loc: "K-spot (東京站)", station: "東京站 八重洲地下中央口", memo: "🕒 營業: 10:00-20:30\n🛍️ 商品: 官方授權/聯名快閃\n👥 預估: 週末極擁擠，建議一開門就衝"},
-      {time: "13:00", loc: "池袋 K-BOOKS 戰區", station: "池袋站 東口 35號出口", memo: "🕒 營業: 11:30-20:00\n🛍️ 商品: 二手稀有小卡、絕版周邊\n👥 預估: 下午人潮多"},
-      {time: "15:30", loc: "Tower Records 池袋店", station: "池袋站 東口 P'PARCO 6F", memo: "🕒 營業: 11:00-21:00\n🛍️ 商品: 官方手燈、新專輯\n👥 預估: 較平穩"}
+      {time: "10:00", loc: "K-spot (東京一番街)", addr: "東京都千代田區丸之內1-9-1", station: "東京站 八重洲地下中央口", memo: "官方聯名快閃"},
+      {time: "13:00", loc: "K-BOOKS K-POP館", addr: "東京都豐島區東池袋1-28-1", station: "池袋站 東口 35號", memo: "稀有小卡牆"},
+      {time: "15:30", loc: "Tower Records 池袋", addr: "東京都豐島區東池袋1-50-35", station: "P'PARCO 6F", memo: "官方應援看板"}
     ],
     day2: [
-      {time: "10:30", loc: "澀谷 Tower Records 旗艦店", station: "澀谷站 B1 出口", memo: "🕒 營業: 11:00-22:00\n🛍️ 商品: 1F大看板、5F專區、6F黑膠\n👥 預估: 演唱會當日早上必排隊！"},
-      {time: "13:30", loc: "Mandarake & 109", station: "澀谷站 A2 出口", memo: "🕒 營業: 12:00-20:00\n🛍️ 商品: 早期絕版品、109大海報"},
-      {time: "17:00", loc: "🏟️ 國立競技場 演唱會", station: "國立競技場 A2出口", memo: "🔥 TWICE 2026 TOKYO FINAL!\n請提前入場領取官方應援小物", special: "concert"}
+      {time: "11:00", loc: "Tower Records 澀谷", addr: "東京都澀谷區神南1-22-14", station: "澀谷站 B1 出口", memo: "1F/5F/6F 必逛"},
+      {time: "17:00", loc: "🏟️ 國立競技場", addr: "東京都新宿區霞丘町10-1", station: "國立競技場站", memo: "TWICE CONCERT!", special: "concert"}
     ],
     day3: [
-      {time: "10:00", loc: "新大久保韓國街", station: "JR 新大久保站", memo: "🕒 營業: 10:00起\n🛍️ 重點: Seoul Record, MOIZA, 韓流百貨\n👥 預估: 中午後極擁擠"},
-      {time: "13:30", loc: "新宿 Tower Records", station: "新宿站 東南口 Flags", memo: "🕒 營業: 11:00-22:00\n🛍️ 商品: 團員親筆簽名板、衣裝展示"},
-      {time: "15:00", loc: "HMV&BOOKS SPOT 新宿", station: "新宿 Lumine Est B1", memo: "🕒 營業: 11:00-21:00\n🛍️ 商品: 最後補齊專輯、雜誌"},
-      {time: "16:30", loc: "✈️ 前往成田機場", station: "新宿站 NEX 月台", memo: "🍭 Mission Complete! 下次見！"}
+      {time: "10:00", loc: "Seoul Record", addr: "東京都新宿區大久保1-16-13", station: "新大久保站", memo: "老字號唱片行"},
+      {time: "11:30", loc: "MOIZA", addr: "東京都新宿區大久保2-32-2", station: "新大久保站", memo: "應援棒配件"},
+      {time: "13:30", loc: "Tower Records 新宿", addr: "東京都新宿區新宿3-37-1", station: "Flags 9F", memo: "團員簽名板"}
     ]
   };
 
-  let myEvents = JSON.parse(localStorage.getItem('twice_app_v12')) || initialData;
+  let myEvents = JSON.parse(localStorage.getItem('twice_v14')) || initialData;
   let activeTab = 'day1';
 
   function renderEvents() {
@@ -112,39 +105,60 @@
             <button class="del-btn" onclick="deleteEvent('${day}', ${index})">×</button>
             <span class="time-tag" contenteditable="true" onblur="updateData('${day}', ${index}, 'time', this.innerText)">⏰ ${ev.time}</span>
             <span class="loc-title" contenteditable="true" onblur="updateData('${day}', ${index}, 'loc', this.innerText)">📍 ${ev.loc}</span>
+            <div class="address-box">🏠 地址: <span contenteditable="true" onblur="updateData('${day}', ${index}, 'addr', this.innerText)">${ev.addr || ''}</span></div>
             <div class="transport-box">🚉 <span contenteditable="true" onblur="updateData('${day}', ${index}, 'station', this.innerText)">${ev.station}</span></div>
             <div class="memo-content" contenteditable="true" onblur="updateData('${day}', ${index}, 'memo', this.innerText)">${ev.memo}</div>
           </div>
         `;
       });
     });
-    localStorage.setItem('twice_app_v12', JSON.stringify(myEvents));
+    localStorage.setItem('twice_v14', JSON.stringify(myEvents));
   }
 
   function updateData(day, index, field, value) {
-    let clean = value.replace('⏰ ', '').replace('📍 ', '');
-    myEvents[day][index][field] = clean;
-    localStorage.setItem('twice_app_v12', JSON.stringify(myEvents));
+    myEvents[day][index][field] = value.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', '');
+    localStorage.setItem('twice_v14', JSON.stringify(myEvents));
+  }
+
+  // 自動串接當日所有地址生成 Google Maps 路線連結
+  function generateDailyRoute() {
+    const events = myEvents[activeTab];
+    const addrList = events.map(e => e.addr).filter(a => a && a.trim() !== "");
+    
+    if (addrList.length < 1) {
+      alert("當日行程中沒有可用的地址喔！");
+      return;
+    }
+
+    const origin = addrList[0];
+    const destination = addrList[addrList.length - 1];
+    const waypoints = addrList.slice(1, -1).join('|');
+    
+    let url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+    if (waypoints) {
+      url += `&waypoints=${encodeURIComponent(waypoints)}`;
+    }
+    url += `&travelmode=transit`; // 設定為大眾運輸
+
+    window.open(url, '_blank');
   }
 
   function addNewEvent() {
-    if (activeTab === 'checklist-tab') return;
-    myEvents[activeTab].push({time: "12:00", loc: "新地點", station: "請輸入站名/出口", memo: "🕒 營業:\n🛍️ 周邊:\n👥 預估:"});
+    myEvents[activeTab].push({time: "12:00", loc: "新地點", addr: "", station: "出口資訊", memo: "備註..."});
     renderEvents();
   }
 
   function deleteEvent(day, index) {
-    if(confirm("確定刪除此項行程？")) { myEvents[day].splice(index, 1); renderEvents(); }
+    if(confirm("確定刪除？")) { myEvents[day].splice(index, 1); renderEvents(); }
   }
 
   function addItem() {
-    const val = document.getElementById('new-item-input').value;
+    const val = prompt("新增項目:");
     if(!val) return;
     const div = document.createElement('div');
-    div.className = "check-item";
-    div.innerHTML = `<input type="checkbox"> <span>${val}</span>`;
+    div.style = "padding:10px; background:white; border-radius:8px; margin-bottom:8px;";
+    div.innerHTML = `<input type="checkbox"> ${val}`;
     document.getElementById('packing-list').appendChild(div);
-    document.getElementById('new-item-input').value = "";
   }
 
   function showTab(tabId, btn) {
@@ -160,7 +174,7 @@
     const target = new Date('2026-04-26T17:00:00+09:00');
     const now = new Date();
     const diff = target - now;
-    if (diff <= 0) { document.getElementById('countdown').innerText = 'SHOW TIME! 🍭'; return; }
+    if (diff <= 0) { document.getElementById('countdown').innerText = 'ENJOY THE SHOW! 🍭'; return; }
     const d = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
     const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
     const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
