@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TWICE 2026 Guide</title>
+<title>TWICE2026</title>
 
 <link rel="apple-touch-icon" href="https://i.imgur.com/W7v5p5E.png">
-<link rel="icon" href="https://i.imgur.com/W7v5p5E.png">
+<link rel="apple-touch-icon-precomposed" href="https://i.imgur.com/W7v5p5E.png">
+<link rel="icon" type="image/png" href="https://i.imgur.com/W7v5p5E.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TWICE2026">
@@ -14,147 +15,174 @@
 <style>
   :root { --primary: #F04E98; --bg: #fdfbfb; --card-bg: #ffffff; --text: #333; --grad: linear-gradient(135deg, #FFAD60, #F04E98); }
   body { font-family: -apple-system, sans-serif; margin:0; background: var(--bg); color: var(--text); padding-bottom: 120px; }
-  header { background: var(--grad); color:white; text-align:center; padding:18px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s; }
+  header { background: var(--grad); color:white; text-align:center; padding:20px 18px 15px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
   
-  /* 成員應援色調色盤 */
+  /* 調色盤 */
   .member-palette { display: flex; overflow-x: auto; padding: 15px; gap: 12px; background: #fff; border-bottom: 1px solid #eee; }
-  .member-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #f0f0f0; flex-shrink: 0; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+  .member-dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #f0f0f0; flex-shrink: 0; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-  #countdown { background:#222; color:#FFAD60; font-size:1em; padding:8px; text-align:center; font-family: monospace; }
+  #countdown { background:#222; color:#FFAD60; font-size:1em; padding:10px; text-align:center; font-family: monospace; letter-spacing: 1px; }
   
-  .tabs { display: flex; background: white; position: sticky; top: 71px; z-index: 999; border-bottom: 1px solid #ddd; overflow-x: auto; }
-  .tab-btn { padding: 14px 10px; border: none; background: none; font-weight: bold; color: #bbb; flex: 0 0 20%; outline:none; font-size: 0.8em; white-space: nowrap; }
+  /* 分頁標籤 */
+  .tabs { display: flex; background: white; position: sticky; top: 73px; z-index: 999; border-bottom: 1px solid #ddd; overflow-x: auto; }
+  .tab-btn { padding: 14px 15px; border: none; background: none; font-weight: bold; color: #bbb; flex: 1; outline:none; font-size: 0.85em; white-space: nowrap; }
   .tab-btn.active { color: #F04E98; border-bottom: 3px solid #F04E98; }
 
   .day-content { display: none; padding: 15px; }
   .day-content.active { display: block; }
 
-  .event-card { background: var(--card-bg); border-radius: 15px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; border-left: 10px solid var(--primary); transition: 0.3s; }
-  .info-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 8px; border: 1px solid #eee; }
+  /* 卡片與編輯區 */
+  .event-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; border-left: 10px solid var(--primary); }
+  .edit-area:focus { outline: none; background: #fff0f5; border-radius: 4px; }
+  .info-box { background: #f8f9fa; padding: 12px; border-radius: 10px; font-size: 0.9em; margin-top: 10px; border: 1px solid #f0f0f0; }
   
-  .check-item { display: flex; align-items: center; background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; border-left: 5px solid #FFAD60; }
-  .check-item input { width: 20px; height: 20px; margin-right: 12px; }
+  .del-btn { position: absolute; right: 10px; top: 10px; color: #ddd; font-size: 1.2em; border:none; background:none; }
+  .route-btn { background: #4285F4; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; }
+  .big-add-btn { background: var(--grad); color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; box-shadow: 0 4px 12px rgba(240, 78, 152, 0.2); }
   
-  .trans-box { background: #e3f2fd; border-left: 10px solid #2196f3; padding: 12px; border-radius: 10px; margin-bottom: 10px; font-size: 0.9em; }
-  .big-add-btn { background: #F04E98; color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; }
+  .check-item { display: flex; align-items: center; background: white; padding: 14px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #FFAD60; }
+  .check-item input { width: 22px; height: 22px; margin-right: 15px; }
 </style>
 </head>
 <body>
 
-<header id="main-header">🍭 TWICE 2026 Tokyo Guide</header>
+<header id="main-header">🍭 TWICE 2026 Tokyo</header>
 
 <div class="member-palette" id="global-palette"></div>
 
 <div id="countdown">00D 00:00:00</div>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="showTab('checklist-tab', this)">check</button>
-  <button class="tab-btn" onclick="showTab('day1', this)">4/25 一</button>
-  <button class="tab-btn" onclick="showTab('day2', this)">4/26 二</button>
-  <button class="tab-btn" onclick="showTab('day3', this)">4/27 三</button>
-  <button class="tab-btn" onclick="showTab('trans-tab', this)">交通指南</button>
+  <button class="tab-btn active" onclick="showTab('day1', this)">4/25 六</button>
+  <button class="tab-btn" onclick="showTab('day2', this)">4/26 日</button>
+  <button class="tab-btn" onclick="showTab('day3', this)">4/27 一</button>
+  <button class="tab-btn" onclick="showTab('checklist-tab', this)">清單</button>
+  <button class="tab-btn" onclick="showTab('trans-tab', this)">交通</button>
 </div>
 
-<div id="checklist-tab" class="day-content active">
-  <h3 style="margin-top:0;">🎒 出國必帶清單</h3>
+<div id="day1" class="day-content active">
+  <button class="route-btn" onclick="generateMap('day1')">🗺️ 查看今日路線圖</button>
+  <div id="events-day1"></div>
+  <button class="big-add-btn" onclick="addEvent('day1')">＋ 新增行程</button>
+</div>
+
+<div id="day2" class="day-content">
+  <button class="route-btn" onclick="generateMap('day2')">🗺️ 查看今日路線圖</button>
+  <div id="events-day2"></div>
+  <button class="big-add-btn" onclick="addEvent('day2')">＋ 新增行程</button>
+</div>
+
+<div id="day3" class="day-content">
+  <button class="route-btn" onclick="generateMap('day3')">🗺️ 查看今日路線圖</button>
+  <div id="events-day3"></div>
+  <button class="big-add-btn" onclick="addEvent('day3')">＋ 新增行程</button>
+</div>
+
+<div id="checklist-tab" class="day-content">
   <div id="packing-list"></div>
-  <button class="big-add-btn" onclick="addItem('packing-list')">＋ 新增物品備忘</button>
+  <button class="big-add-btn" onclick="addItem()">＋ 新增清單項目</button>
 </div>
-
-<div id="day1" class="day-content"></div>
-<div id="day2" class="day-content"></div>
-<div id="day3" class="day-content"></div>
 
 <div id="trans-tab" class="day-content">
-  <h3 style="margin-top:0;">🗺️ 東京交通指南</h3>
-  <div id="transport-list">
-    <div class="trans-box"><b>✈️ 成田機場 Skyliner</b><br>4/25 06:30 抵達後，往市區最快工具。</div>
-    <div class="trans-box"><b>💳 Apple Wallet Suica</b><br>iPhone 直接嗶卡進站，無需排隊買票。</div>
-    <div class="trans-box"><b>🏟️ 國立競技場站</b><br>都營大江戶線 A2 出口，出站即是演唱會場。</div>
-    <div class="trans-box"><b>🏨 秋葉原站</b><br>JR、日比谷線、TX交會，飯店所在地。</div>
-  </div>
+  <div id="transport-list"></div>
   <button class="big-add-btn" onclick="addTrans()">＋ 新增交通備忘</button>
 </div>
 
 <script>
-  // 應援色設定
   const officialColors = ["#F04E98", "#81D4FA", "#C5E1A5", "#F48FB1", "#B39DDB", "#FFB74D", "#80CBC4", "#F5F5F5", "#EF5350", "#64B5F6"];
   
-  const initialTripData = {
+  // 預設行程數據
+  const defaultTrip = {
     day1: [
-      {time: "06:30", loc: "抵達成田機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "抵達日本 ✈️", color: "#64B5F6"},
-      {time: "10:30", loc: "澀谷追星戰區", addr: "Tower Records / 109", line: "JR/地鐵", station: "澀谷站", memo: "4/25 首站", color: "#F04E98"},
-      {time: "15:00", loc: "新大久保韓國街", addr: "新宿區", line: "JR山手線", station: "新大久保", memo: "韓流補貨", color: "#EF5350"},
-      {time: "17:30", loc: "新宿官方展示店", addr: "TSUTAYA", line: "JR", station: "新宿站", memo: "拍照點", color: "#81D4FA"}
+      {time: "06:30", loc: "成田機場", addr: "Narita Airport", station: "Skyliner", memo: "抵達"},
+      {time: "10:30", loc: "澀谷 Tower Records", addr: "澀谷區神南1-22-14", station: "澀谷站", memo: "拍照"},
+      {time: "15:00", loc: "新大久保韓國街", addr: "新大久保站", station: "JR山手線", memo: "補貨"},
+      {time: "18:00", loc: "新宿官方店", addr: "新宿站", station: "JR新宿", memo: "TSUTAYA"}
     ],
     day2: [
-      {time: "10:00", loc: "原宿竹下通", addr: "神宮前", line: "JR山手線", station: "原宿站", memo: "聯名甜點", color: "#FFB74D"},
-      {time: "13:00", loc: "池袋掃貨", addr: "Sunshine City", line: "JR", station: "池袋站", memo: "K-BOOKS", color: "#80CBC4"},
-      {time: "17:00", loc: "國立競技場", addr: "會場", line: "大江戶線", station: "國立競技場", memo: "🍭 TWICE CONCERT", color: "#F04E98"}
+      {time: "10:00", loc: "原宿竹下通", addr: "原宿站", station: "JR", memo: "逛街"},
+      {time: "13:00", loc: "池袋巡禮", addr: "池袋站", station: "JR", memo: "K-BOOKS"},
+      {time: "17:00", loc: "國立競技場", addr: "Japan National Stadium", station: "大江戶線", memo: "🍭 CONCERT"}
     ],
     day3: [
-      {time: "09:00", loc: "秋葉原最後採買", addr: "飯店周邊", line: "JR", station: "秋葉原站", memo: "最後掃貨", color: "#C5E1A5"},
-      {time: "11:00", loc: "前往機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "回家✈️", color: "#64B5F6"},
-      {time: "12:50", loc: "抵達成田機場", addr: "航廈", line: "抵達", station: "成田", memo: "準備登機", color: "#F5F5F5"}
+      {time: "09:00", loc: "秋葉原掃貨", addr: "秋葉原站", station: "JR/地鐵", memo: "最後補貨"},
+      {time: "12:50", loc: "成田機場", addr: "Narita Airport", station: "Skyliner", memo: "回程報到"}
     ]
   };
 
-  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v31')) || initialTripData;
-  let myItems = JSON.parse(localStorage.getItem('twice_items_v31')) || ["護照 & 門票", "Candy Bong (手燈)", "行動電源", "日幣現金"];
+  let myTrip = JSON.parse(localStorage.getItem('tw_trip_v5')) || defaultTrip;
+  let myItems = JSON.parse(localStorage.getItem('tw_items_v5')) || ["護照與門票", "Candy Bong 手燈", "行動電源", "日幣現金"];
+  let myTrans = JSON.parse(localStorage.getItem('tw_trans_v5')) || ["4/25 06:30 抵達成田機場", "iPhone 錢包內建 Suica 免實體卡"];
 
-  // 初始化調色盤
+  // 初始化主題顏色切換
   const palette = document.getElementById('global-palette');
-  officialColors.forEach((color, idx) => {
+  officialColors.forEach((color, i) => {
     const dot = document.createElement('div');
-    dot.className = 'member-dot';
-    dot.style.backgroundColor = color;
-    dot.onclick = () => { if(idx === 0) resetTheme(); else setGlobalTheme(color); };
+    dot.className = 'member-dot'; dot.style.backgroundColor = color;
+    dot.onclick = () => {
+      const header = document.getElementById('main-header');
+      if(i === 0) {
+        document.documentElement.style.setProperty('--primary', '#F04E98');
+        header.style.background = 'linear-gradient(135deg, #FFAD60, #F04E98)';
+      } else {
+        document.documentElement.style.setProperty('--primary', color);
+        header.style.background = color;
+      }
+    };
     palette.appendChild(dot);
   });
 
-  function setGlobalTheme(color) {
-    document.documentElement.style.setProperty('--primary', color);
-    document.getElementById('main-header').style.background = color;
-  }
-
-  function resetTheme() {
-    document.documentElement.style.setProperty('--primary', '#F04E98');
-    document.getElementById('main-header').style.background = 'linear-gradient(135deg, #FFAD60, #F04E98)';
-  }
-
+  // 渲染行程
   function renderEvents() {
     ['day1', 'day2', 'day3'].forEach(day => {
-      const container = document.getElementById(day);
-      container.innerHTML = myEvents[day].map((ev) => `
-        <div class="event-card" style="border-left-color: ${ev.color}">
-          <div style="font-weight:bold; color:var(--primary);">⏰ ${ev.time}</div>
-          <div style="font-size:1.1em; font-weight:bold; margin:5px 0;">📍 ${ev.loc}</div>
-          <div class="info-box">🚇 ${ev.line} / ${ev.station}</div>
-          <div style="font-size:0.85em; color:#666;">📝 ${ev.memo}</div>
-        </div>`).join('');
+      const container = document.getElementById('events-' + day);
+      container.innerHTML = myTrip[day].map((ev, i) => `
+        <div class="event-card">
+          <button class="del-btn" onclick="deleteEvent('${day}', ${i})">✕</button>
+          <div class="edit-area" contenteditable="true" onblur="editEvent('${day}',${i},'time',this.innerText)">⏰ ${ev.time}</div>
+          <div class="edit-area" style="font-weight:bold; font-size:1.1em; margin:5px 0;" contenteditable="true" onblur="editEvent('${day}',${i},'loc',this.innerText)">📍 ${ev.loc}</div>
+          <div class="info-box">
+            <div>🏠 地址: <span class="edit-area" contenteditable="true" onblur="editEvent('${day}',${i},'addr',this.innerText)">${ev.addr}</span></div>
+            <div style="margin-top:5px;">🚇 交通: <span class="edit-area" contenteditable="true" onblur="editEvent('${day}',${i},'station',this.innerText)">${ev.station}</span></div>
+          </div>
+          <div class="edit-area" style="font-size:0.85em; color:#666; margin-top:8px;" contenteditable="true" onblur="editEvent('${day}',${i},'memo',this.innerText)">📝 ${ev.memo}</div>
+        </div>
+      `).join('');
     });
+    save();
   }
 
-  function renderItems() {
-    const list = document.getElementById('packing-list');
-    list.innerHTML = myItems.map((item, i) => `
-      <div class="check-item">
-        <input type="checkbox">
-        <span contenteditable="true" onblur="updateItem(${i}, this.innerText)">${item}</span>
-        <span style="margin-left:auto; color:#ccc;" onclick="deleteItem(${i})">✕</span>
-      </div>`).join('');
-    localStorage.setItem('twice_items_v31', JSON.stringify(myItems));
+  // 渲染清單與交通
+  function renderOthers() {
+    document.getElementById('packing-list').innerHTML = myItems.map((it, i) => `<div class="check-item"><input type="checkbox"><span class="edit-area" contenteditable="true" onblur="myItems[${i}]=this.innerText;save()">${it}</span><span style="margin-left:auto;color:#ddd;" onclick="myItems.splice(${i},1);renderOthers()">✕</span></div>`).join('');
+    document.getElementById('transport-list').innerHTML = myTrans.map((tr, i) => `<div class="event-card" style="border-left-color:#2196f3;"><div class="edit-area" contenteditable="true" onblur="myTrans[${i}]=this.innerText;save()">${tr}</div><button class="del-btn" onclick="myTrans.splice(${i},1);renderOthers()">✕</button></div>`).join('');
+    save();
   }
 
-  function addItem() { myItems.push("新物品"); renderItems(); }
-  function addTrans() { document.getElementById('transport-list').innerHTML += `<div class="trans-box" contenteditable="true">點擊編輯交通備忘...</div>`; }
-  function updateItem(i, val) { myItems[i] = val; localStorage.setItem('twice_items_v31', JSON.stringify(myItems)); }
-  function deleteItem(i) { myItems.splice(i, 1); renderItems(); }
+  // 路線圖生成邏輯
+  function generateMap(day) {
+    const addresses = myTrip[day].map(ev => encodeURIComponent(ev.addr.replace('🏠 地址: ', '')));
+    if(addresses.length < 2) return alert("請至少輸入兩個地址");
+    const url = `https://www.google.com/maps/dir/${addresses.join('/')}`;
+    window.location.href = url;
+  }
 
-  function showTab(t, b) { 
+  // 增刪改功能
+  function editEvent(d, i, f, v) { myTrip[d][i][f] = v.replace('⏰ ', '').replace('📍 ', '').replace('🏠 地址: ', '').replace('🚇 交通: ', '').replace('📝 ', ''); save(); }
+  function deleteEvent(d, i) { if(confirm("確定刪除此行程？")) { myTrip[d].splice(i, 1); renderEvents(); } }
+  function addEvent(d) { myTrip[d].push({time: "12:00", loc: "新地點", addr: "請輸入地址", station: "交通工具", memo: "備註"}); renderEvents(); }
+  function addItem() { myItems.push("新項目"); renderOthers(); }
+  function addTrans() { myTrans.push("新交通資訊"); renderOthers(); }
+  function save() { 
+    localStorage.setItem('tw_trip_v5', JSON.stringify(myTrip)); 
+    localStorage.setItem('tw_items_v5', JSON.stringify(myItems));
+    localStorage.setItem('tw_trans_v5', JSON.stringify(myTrans));
+  }
+
+  function showTab(t, b) {
     document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(t).classList.add('active'); b.classList.add('active'); 
+    document.getElementById(t).classList.add('active'); b.classList.add('active');
   }
 
   setInterval(() => {
@@ -163,7 +191,7 @@
     document.getElementById('countdown').innerText = diff > 0 ? `${d}D ${h}:${m}:${s}` : 'SHOW TIME! 🍭';
   }, 1000);
 
-  renderEvents(); renderItems();
+  renderEvents(); renderOthers();
 </script>
 </body>
 </html>
