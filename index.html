@@ -14,8 +14,12 @@
 <style>
   :root { --primary: #F04E98; --bg: #fdfbfb; --card-bg: #ffffff; --text: #333; --grad: linear-gradient(135deg, #FFAD60, #F04E98); }
   body { font-family: -apple-system, sans-serif; margin:0; background: var(--bg); color: var(--text); padding-bottom: 120px; }
-  header { background: var(--grad); color:white; text-align:center; padding:18px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  header { background: var(--grad); color:white; text-align:center; padding:18px; font-weight:bold; position:sticky; top:0; z-index:1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s; }
   
+  /* 成員應援色調色盤 */
+  .member-palette { display: flex; overflow-x: auto; padding: 15px; gap: 12px; background: #fff; border-bottom: 1px solid #eee; }
+  .member-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #f0f0f0; flex-shrink: 0; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
   #countdown { background:#222; color:#FFAD60; font-size:1em; padding:8px; text-align:center; font-family: monospace; }
   
   .tabs { display: flex; background: white; position: sticky; top: 71px; z-index: 999; border-bottom: 1px solid #ddd; overflow-x: auto; }
@@ -25,34 +29,36 @@
   .day-content { display: none; padding: 15px; }
   .day-content.active { display: block; }
 
-  .event-card { background: var(--card-bg); border-radius: 15px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; border-left: 10px solid var(--primary); }
+  .event-card { background: var(--card-bg); border-radius: 15px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; border-left: 10px solid var(--primary); transition: 0.3s; }
   .info-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 8px; border: 1px solid #eee; }
   
   .check-item { display: flex; align-items: center; background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; border-left: 5px solid #FFAD60; }
   .check-item input { width: 20px; height: 20px; margin-right: 12px; }
   
   .trans-box { background: #e3f2fd; border-left: 10px solid #2196f3; padding: 12px; border-radius: 10px; margin-bottom: 10px; font-size: 0.9em; }
-  
   .big-add-btn { background: #F04E98; color: white; border: none; width: 100%; padding: 16px; border-radius: 35px; font-weight: bold; margin-top: 10px; }
 </style>
 </head>
 <body>
 
 <header id="main-header">🍭 TWICE 2026 Tokyo Guide</header>
+
+<div class="member-palette" id="global-palette"></div>
+
 <div id="countdown">00D 00:00:00</div>
 
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('checklist-tab', this)">check</button>
-  <button class="tab-btn" onclick="showTab('day1', this)">4/25 六</button>
-  <button class="tab-btn" onclick="showTab('day2', this)">4/26 日</button>
-  <button class="tab-btn" onclick="showTab('day3', this)">4/27 一</button>
+  <button class="tab-btn" onclick="showTab('day1', this)">4/25 一</button>
+  <button class="tab-btn" onclick="showTab('day2', this)">4/26 二</button>
+  <button class="tab-btn" onclick="showTab('day3', this)">4/27 三</button>
   <button class="tab-btn" onclick="showTab('trans-tab', this)">交通指南</button>
 </div>
 
 <div id="checklist-tab" class="day-content active">
   <h3 style="margin-top:0;">🎒 出國必帶清單</h3>
   <div id="packing-list"></div>
-  <button class="big-add-btn" onclick="addItem('packing-list')">＋ 新增物品</button>
+  <button class="big-add-btn" onclick="addItem('packing-list')">＋ 新增物品備忘</button>
 </div>
 
 <div id="day1" class="day-content"></div>
@@ -60,25 +66,26 @@
 <div id="day3" class="day-content"></div>
 
 <div id="trans-tab" class="day-content">
-  <h3 style="margin-top:0;">🗺️ 東京交通備忘</h3>
+  <h3 style="margin-top:0;">🗺️ 東京交通指南</h3>
   <div id="transport-list">
-    <div class="trans-box"><b>✈️ 成田機場 Skyliner</b><br>往返市區最快工具，建議事先購買電子票。</div>
-    <div class="trans-box"><b>💳 交通卡 (Suica/Pasmo)</b><br>iPhone 可直接加到 Apple Wallet，嗶卡進站。</div>
-    <div class="trans-box"><b>🏟️ 國立競技場站</b><br>都營大江戶線 A2 出口，出來即達會場。</div>
-    <div class="trans-box"><b>🏨 秋葉原站</b><br>JR山手線、中央總武線、日比谷線交會。</div>
+    <div class="trans-box"><b>✈️ 成田機場 Skyliner</b><br>4/25 06:30 抵達後，往市區最快工具。</div>
+    <div class="trans-box"><b>💳 Apple Wallet Suica</b><br>iPhone 直接嗶卡進站，無需排隊買票。</div>
+    <div class="trans-box"><b>🏟️ 國立競技場站</b><br>都營大江戶線 A2 出口，出站即是演唱會場。</div>
+    <div class="trans-box"><b>🏨 秋葉原站</b><br>JR、日比谷線、TX交會，飯店所在地。</div>
   </div>
-  <button class="big-add-btn" onclick="addItem('transport-list', 'new_trans')">＋ 新增交通備註</button>
+  <button class="big-add-btn" onclick="addTrans()">＋ 新增交通備忘</button>
 </div>
 
 <script>
-  // 核心數據
+  // 應援色設定
+  const officialColors = ["#F04E98", "#81D4FA", "#C5E1A5", "#F48FB1", "#B39DDB", "#FFB74D", "#80CBC4", "#F5F5F5", "#EF5350", "#64B5F6"];
+  
   const initialTripData = {
     day1: [
       {time: "06:30", loc: "抵達成田機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "抵達日本 ✈️", color: "#64B5F6"},
-      {time: "10:30", loc: "澀谷追星戰區", addr: "Tower Records / 109", line: "JR/地鐵", station: "澀谷站", memo: "4/25 重點行程", color: "#F04E98"},
-      {time: "15:00", loc: "新大久保韓國街", addr: "新宿區", line: "JR山手線", station: "新大久保", memo: "韓流周邊採買", color: "#EF5350"},
-      {time: "17:30", loc: "新宿官方展示店", addr: "TSUTAYA / 旗艦店", line: "JR", station: "新宿站", memo: "拍照點", color: "#81D4FA"},
-      {time: "20:00", loc: "入住秋葉原飯店", addr: "秋葉原", line: "JR", station: "秋葉原站", memo: "休息", color: "#F5F5F5"}
+      {time: "10:30", loc: "澀谷追星戰區", addr: "Tower Records / 109", line: "JR/地鐵", station: "澀谷站", memo: "4/25 首站", color: "#F04E98"},
+      {time: "15:00", loc: "新大久保韓國街", addr: "新宿區", line: "JR山手線", station: "新大久保", memo: "韓流補貨", color: "#EF5350"},
+      {time: "17:30", loc: "新宿官方展示店", addr: "TSUTAYA", line: "JR", station: "新宿站", memo: "拍照點", color: "#81D4FA"}
     ],
     day2: [
       {time: "10:00", loc: "原宿竹下通", addr: "神宮前", line: "JR山手線", station: "原宿站", memo: "聯名甜點", color: "#FFB74D"},
@@ -86,21 +93,39 @@
       {time: "17:00", loc: "國立競技場", addr: "會場", line: "大江戶線", station: "國立競技場", memo: "🍭 TWICE CONCERT", color: "#F04E98"}
     ],
     day3: [
-      {time: "09:00", loc: "秋葉原最後採買", addr: "飯店附近百貨", line: "JR", station: "秋葉原站", memo: "最後掃貨時間", color: "#C5E1A5"},
-      {time: "11:00", loc: "出發前往機場", addr: "上野/秋葉原", line: "Skyliner", station: "成田機場", memo: "準備回家", color: "#F5F5F5"},
-      {time: "12:50", loc: "抵達成田機場", addr: "機場航廈", line: "抵達", station: "成田機場", memo: "辦理報到 ✈️", color: "#64B5F6"}
+      {time: "09:00", loc: "秋葉原最後採買", addr: "飯店周邊", line: "JR", station: "秋葉原站", memo: "最後掃貨", color: "#C5E1A5"},
+      {time: "11:00", loc: "前往機場", addr: "成田機場", line: "Skyliner", station: "成田機場", memo: "回家✈️", color: "#64B5F6"},
+      {time: "12:50", loc: "抵達成田機場", addr: "航廈", line: "抵達", station: "成田", memo: "準備登機", color: "#F5F5F5"}
     ]
   };
 
-  const initialItems = ["護照 & 門票", "Candy Bong (手燈)", "行動電源", "日幣現金", "預約二維碼"];
+  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v31')) || initialTripData;
+  let myItems = JSON.parse(localStorage.getItem('twice_items_v31')) || ["護照 & 門票", "Candy Bong (手燈)", "行動電源", "日幣現金"];
 
-  let myEvents = JSON.parse(localStorage.getItem('twice_trip_v30')) || initialTripData;
-  let myItems = JSON.parse(localStorage.getItem('twice_items_v30')) || initialItems;
+  // 初始化調色盤
+  const palette = document.getElementById('global-palette');
+  officialColors.forEach((color, idx) => {
+    const dot = document.createElement('div');
+    dot.className = 'member-dot';
+    dot.style.backgroundColor = color;
+    dot.onclick = () => { if(idx === 0) resetTheme(); else setGlobalTheme(color); };
+    palette.appendChild(dot);
+  });
+
+  function setGlobalTheme(color) {
+    document.documentElement.style.setProperty('--primary', color);
+    document.getElementById('main-header').style.background = color;
+  }
+
+  function resetTheme() {
+    document.documentElement.style.setProperty('--primary', '#F04E98');
+    document.getElementById('main-header').style.background = 'linear-gradient(135deg, #FFAD60, #F04E98)';
+  }
 
   function renderEvents() {
     ['day1', 'day2', 'day3'].forEach(day => {
       const container = document.getElementById(day);
-      container.innerHTML = myEvents[day].map((ev, i) => `
+      container.innerHTML = myEvents[day].map((ev) => `
         <div class="event-card" style="border-left-color: ${ev.color}">
           <div style="font-weight:bold; color:var(--primary);">⏰ ${ev.time}</div>
           <div style="font-size:1.1em; font-weight:bold; margin:5px 0;">📍 ${ev.loc}</div>
@@ -118,26 +143,20 @@
         <span contenteditable="true" onblur="updateItem(${i}, this.innerText)">${item}</span>
         <span style="margin-left:auto; color:#ccc;" onclick="deleteItem(${i})">✕</span>
       </div>`).join('');
-    localStorage.setItem('twice_items_v30', JSON.stringify(myItems));
+    localStorage.setItem('twice_items_v31', JSON.stringify(myItems));
   }
 
-  function addItem(id, type) {
-    if(type === 'new_trans') {
-      document.getElementById(id).innerHTML += `<div class="trans-box" contenteditable="true">點擊編輯交通備註...</div>`;
-    } else {
-      myItems.push("新物品"); renderItems();
-    }
-  }
-
-  function updateItem(i, val) { myItems[i] = val; localStorage.setItem('twice_items_v30', JSON.stringify(myItems)); }
+  function addItem() { myItems.push("新物品"); renderItems(); }
+  function addTrans() { document.getElementById('transport-list').innerHTML += `<div class="trans-box" contenteditable="true">點擊編輯交通備忘...</div>`; }
+  function updateItem(i, val) { myItems[i] = val; localStorage.setItem('twice_items_v31', JSON.stringify(myItems)); }
   function deleteItem(i) { myItems.splice(i, 1); renderItems(); }
+
   function showTab(t, b) { 
     document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(t).classList.add('active'); b.classList.add('active'); 
   }
 
-  // 倒數計時
   setInterval(() => {
     const diff = new Date('2026-04-26T17:00:00+09:00') - new Date();
     const d = Math.floor(diff/86400000), h = Math.floor((diff/3600000)%24), m = Math.floor((diff/60000)%60), s = Math.floor((diff/1000)%60);
@@ -148,4 +167,3 @@
 </script>
 </body>
 </html>
-
